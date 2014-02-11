@@ -2,14 +2,50 @@
 <html lang="en" ng-app="projectTurkey">
 <head>
   <meta charset="utf-8">
-  <title>Google Phone Gallery</title>
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
+  <title>Project Turkey</title>
+
   <script src="lib/angular/angular.js"></script>
   <script src="js/controllers.js"></script>
 </head>
-<body>
+<body ng-controller="dataInput">
 
+  <ul ng-repeat="user in users">
+    <li>
+      <input type="text" ng-model="users[$index].age"> <br>
+      Age: {{ user.age }}
+    </li>
+    <li>
+
+      <input type="text" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()">
+
+      <select ng-model="users[$index].jobCode">
+        <option value="0" selected="selected">Select a job...</option>
+        <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
+      </select>
+
+      Occupation: {{ user.jobTitle }}
+    </li>
+    <li>
+      Soc: {{ user.jobCode }}
+    </li>
+    <li>
+      <select ng-model="users[$index].gender">
+        <option value="1">Male</option>
+        <option value="2">Female</option>
+      </select>
+      Gender: {{ user.gender }}
+    </li>
+  </ul>
+
+  <pre>
+    User 1: {{
+      users[0]
+    }}
+    --
+    User 2: {{
+      users[1]
+    }}
+  </pre>
 
 </body>
 </html>
