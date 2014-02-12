@@ -7,45 +7,81 @@
   <script src="lib/angular/angular.js"></script>
   <script src="js/controllers.js"></script>
 </head>
-<body ng-controller="dataInput">
+<body>
 
-  <ul ng-repeat="user in users">
-    <li>
-      <input type="text" ng-model="users[$index].age"> <br>
-      Age: {{ user.age }}
-    </li>
-    <li>
+  <div ng-controller="dataInput">
 
-      <input type="text" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()">
+    <ul ng-repeat="user in users">
+      <li>
+        <input type="text" ng-model="users[$index].age"> <br>
+        Age: {{ user.age }}
+      </li>
+      <li>
 
-      <select ng-model="users[$index].jobCode">
-        <option value="0" selected="selected">Select a job...</option>
-        <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
-      </select>
+        <input type="text" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()">
 
-      Occupation: {{ user.jobTitle }}
-    </li>
-    <li>
-      Soc: {{ user.jobCode }}
-    </li>
-    <li>
-      <select ng-model="users[$index].gender">
-        <option value="1">Male</option>
-        <option value="2">Female</option>
-      </select>
-      Gender: {{ user.gender }}
-    </li>
-  </ul>
+        <select ng-model="users[$index].jobCode">
+          <option value="0" selected="selected">Select a job...</option>
+          <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
+        </select>
 
-  <pre>
-    User 1: {{
-      users[0]
-    }}
-    --
-    User 2: {{
-      users[1]
-    }}
-  </pre>
+        Occupation: {{ user.jobTitle }}
+      </li>
+      <li>
+        Soc: {{ user.jobCode }}
+      </li>
+      <li>
+        <select ng-model="users[$index].gender">
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+        </select>
+        Gender: {{ user.gender }}
+      </li>
+    </ul>
+
+    <pre>
+      User 1: {{
+        users[0]
+      }}
+      --
+      User 2: {{
+        users[1]
+      }}
+    </pre>
+
+  </div>
+
+  <div ng-controller="usa">
+    Tokens Left: {{ maxTokens - tokensUsed }} || Tokens Used: {{ tokensUsed }}
+
+    max: {{ maxWages }}
+    <ul>
+      <li>
+        Wages: <input type="number" min="0" max="{{ maxWages }}" ng-model="metrics.wages" ng-change="limitTokens()"> {{ metrics['wages'] }}
+      </li>
+      <li>
+        Prospects: <input type="number" min="0" max="{{ maxProspects }}" ng-model="metrics['prospects']" ng-change="limitTokens()"> {{ metrics['prospects'] }}
+      </li>
+      <li>
+        Education: <input type="number" min="0" max="{{ maxEducation }}" ng-model="metrics['education']" ng-change="limitTokens()"> {{ metrics['education'] }}
+      </li>
+    </ul>
+
+    <pre>
+      {{metrics}}
+    </pre>
+  </div>
+
+  <div ng-controller="calculateDeets">
+    <pre>
+      {{ wages }}
+    </pre>
+    <pre>
+      {{ prospects }}
+    </pre>
+
+    <button ng-click="getWages()">Get Wages</button>
+  </div>
 
 </body>
 </html>
