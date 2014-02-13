@@ -92,66 +92,47 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.metrics = appData.metrics;
 
   $scope.wages = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null, null]
   ];
 
   $scope.prospects = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [null, null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null,null]
   ];
 
-  $scope.education = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  $scope.education = [null, null, null, null, null, null, null, null, null, null, null, null,null];
 
 
-  $scope.resultMatrix =[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  $scope.resultMatrix =[null, null, null, null, null, null, null, null, null, null, null, null,null];
 
 
   $scope.message = "";
 
   $scope.getWages = function(){
-    console.log($scope.metrics);
-    $scope.getWagesFor0();
-    $scope.getWagesFor1();
+    $scope.getWagesForUser(0);
+    $scope.getWagesForUser(1);
     $scope.getProspectsFor0();
     $scope.getProspectsFor1();
     $scope.getEducation();
   }
 
-  $scope.getWagesFor0 = function() {
-    SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[0].jobCode + '&coarse=true&filter=gender:' + $scope.users[0].gender + '&breakdown=region')
+  $scope.getWagesForUser = function(i) {
+    SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender + '&breakdown=region')
       .success(function(data){
         var totalWages = 0;
-        angular.forEach(data.series[0].breakdown, function(e, i){
-          $scope.wages[0][e.region] = e.estpay;
-          totalWages += e.estpay;
+        angular.forEach(data.series[0].breakdown, function(row, index){
+          $scope.wages[i][row.region] = row.estpay;
+          totalWages += row.estpay;
         });
 
-        for (var r = 0; r < $scope.wages[0].length; r++)
+        for (var r = 0; r < $scope.wages[i].length; r++)
         {
-          $scope.wages[0][r] = $scope.wages[0][r]/totalWages;
-          $scope.wages[0][r] = parseFloat($scope.wages[0][r].toFixed(4));
-        }
-      })
-      .error(function(data){
-        console.error("Error:", data);
-      });
-  };
-
-  $scope.getWagesFor1 = function(){
-    SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[1].jobCode + '&coarse=true&filter=gender:' + $scope.users[1].gender + '&breakdown=region')
-      .success(function(data){
-        var totalWages = 0;
-        
-        angular.forEach(data.series[0].breakdown, function(e, i){
-          $scope.wages[1][e.region] = e.estpay;
-          totalWages += e.estpay;
-        });
-        
-        for (var r = 0; r < $scope.wages[1].length; r++)
-        {
-          $scope.wages[1][r] = $scope.wages[1][r]/totalWages;
-          $scope.wages[1][r] = parseFloat($scope.wages[1][r].toFixed(4));
+          if ($scope.wages[i][r] != null)
+          {
+            $scope.wages[i][r] = $scope.wages[i][r]/totalWages;
+            $scope.wages[i][r] = parseFloat($scope.wages[i][r].toFixed(4));
+          }
         }
       })
       .error(function(data){
