@@ -121,9 +121,17 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getWagesFor0 = function() {
     SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[0].jobCode + '&coarse=true&filter=gender:' + $scope.users[0].gender + '&breakdown=region')
       .success(function(data){
+        var totalWages = 0;
         angular.forEach(data.series[0].breakdown, function(e, i){
           $scope.wages[0][e.region] = e.estpay;
+          totalWages += e.estpay;
         });
+
+        for (var r = 0; r < $scope.wages[0].length; r++)
+        {
+          $scope.wages[0][r] = $scope.wages[0][r]/totalWages;
+          $scope.wages[0][r] = parseFloat($scope.wages[0][r].toFixed(4));
+        }
       })
       .error(function(data){
         console.error("Error:", data);
@@ -133,9 +141,18 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getWagesFor1 = function(){
     SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[1].jobCode + '&coarse=true&filter=gender:' + $scope.users[1].gender + '&breakdown=region')
       .success(function(data){
+        var totalWages = 0;
+        
         angular.forEach(data.series[0].breakdown, function(e, i){
           $scope.wages[1][e.region] = e.estpay;
+          totalWages += e.estpay;
         });
+        
+        for (var r = 0; r < $scope.wages[1].length; r++)
+        {
+          $scope.wages[1][r] = $scope.wages[1][r]/totalWages;
+          $scope.wages[1][r] = parseFloat($scope.wages[1][r].toFixed(4));
+        }
       })
       .error(function(data){
         console.error("Error:", data);
@@ -145,9 +162,18 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getProspectsFor0 = function(){
     SOC.get('http://api.lmiforall.org.uk/api/v1/wf/predict/breakdown/region?soc=' + $scope.users[1].jobCode + '&maxYear=2015')
       .success(function(data){
+        var totalProspects = 0;
         angular.forEach(data.predictedEmployment[0].breakdown, function(e, i){
           $scope.prospects[0][e.code] = e.employment;
+          totalProspects += e.employment;
         });
+
+        for (var r = 0; r < $scope.prospects[0].length; r++)
+        {
+          $scope.prospects[0][r] = $scope.prospects[0][r]/totalProspects;
+          $scope.prospects[0][r] = parseFloat($scope.prospects[0][r].toFixed(4));        
+        }
+
       })
       .error(function(data){
         console.error("Error:", data);
@@ -157,9 +183,17 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getProspectsFor1 = function(){
     SOC.get('http://api.lmiforall.org.uk/api/v1/wf/predict/breakdown/region?soc=' + $scope.users[1].jobCode + '&maxYear=2015')
       .success(function(data){
+        var totalProspects = 0;
         angular.forEach(data.predictedEmployment[0].breakdown, function(e, i){
           $scope.prospects[1][e.code] = e.employment;
+          totalProspects += e.employment;
         });
+        for (var r = 0; r < $scope.prospects[1].length; r++)
+        {
+          $scope.prospects[1][r] = $scope.prospects[1][r]/totalProspects;
+          $scope.prospects[1][r] = parseFloat($scope.prospects[1][r].toFixed(4));        
+        }
+
       })
       .error(function(data){
         console.error("Error:", data);
@@ -169,14 +203,21 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getEducation = function(){
     SOC.get('http://opendatacommunities.org/sparql.json?query=PREFIX+finance%3A+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Ffinance%2F%3E%0D%0APREFIX+qb%3A+%3Chttp%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23%3E%0D%0APREFIX+housing%3A+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Fhousing%2F%3E%0D%0APREFIX+gov%3A+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Flocal-government%2F%3E%0D%0APREFIX+sdmx%3A+%3Chttp%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fdimension%23%3E%0D%0A%0D%0A%0D%0Aselect+%3Fregion+%28SUM%28%3Fspend%29+as+%3Fs%29+where+%7B%0D%0A%3Fobs+finance%3Aauthority+%3Fdistricts+.%0D%0A%3Fdistricts+%3Chttp%3A%2F%2Fstatistics.data.gov.uk%2Fdef%2Fadministrative-geography%2Fregion%3E+%3Fregion+.%0D%0A%3Fobs+finance%3AserviceExpenditureCategory+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Ffinance%2Fconcept%2Fservice-expenditure-category%2F190%3E+.%0D%0A%3Fobs+qb%3AdataSet+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdata%2Fservice-expenditure%3E+.%0D%0A%3Fobs+finance%3ArevenueAccountBudgetCategory+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Ffinance%2Fconcept%2Frevenue-account-budget-category%2Fnet-total-cost%3E+.%0D%0A%3Fobs+finance%3Aamount+%3Fspend+.%0D%0A%3Fh+qb%3AdataSet+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdata%2Fhouseholds-2008%3E+.%0D%0A%3Fh+sdmx%3ArefArea+%3Farea+.%0D%0A%3Farea+gov%3AisGovernedBy+%3Fdistricts+.%0D%0A%3Fh+housing%3Ahouseholds+%3Fhouseholds%0D%0A%7D%0D%0Agroup+by+%3Fregion')
       .success(function(data){
+        var totalEducation = 0;
         angular.forEach(data.results.bindings, function (object, key) {
           var URI = object.region.value;
           var index = $scope.regionLetterToRegionIndex(URI.substring(URI.length-1));
           if (index != -1)
           {
             $scope.education[index] = parseInt(object.s.value);
+            totalEducation += parseInt(object.s.value);
           }
-        });        
+        }); 
+        for (var i = 0; i < $scope.education.length; i++)
+        {
+          $scope.education[i] = $scope.education[i] / totalEducation;
+          $scope.education[i] = parseFloat($scope.education[i].toFixed(4)); 
+        }
       })
       .error(function(data){
         console.error("Error:", data);
@@ -186,7 +227,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getLifePlan = function()
   {
     var bestRegion = -1;
-    var bestRegionValue = -1;
+    var bestRegionValue = 0;
     for(var index = 0; index < $scope.resultMatrix.length-1; index++)
     {
       var val = 0;
@@ -195,7 +236,6 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       val += $scope.prospects[0][index] * $scope.metrics.prospects;
       val += $scope.prospects[1][index] * $scope.metrics.prospects;
       val += $scope.education[index]    * $scope.metrics.education;
-      console.log(val);
       $scope.resultMatrix[index] = val;    
       
       if (val > bestRegionValue)
@@ -204,7 +244,10 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         bestRegionValue = val;
       }
     }
-    $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
+    if (bestRegion != -1)
+    {
+      $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
+    }
   };
 
   // TODO: Make sure we are using the regional indexes correct, LMI have conflicting values?! :(
