@@ -41,9 +41,9 @@ projectTurkey.service('appData', function(){
     }
   ];
   this.metrics = {
-      'wages': 0,
-      'prospects': 0,
-      'education': 0
+      'wages': 1,
+      'prospects': 1,
+      'education': 1
     };
 })
 
@@ -112,8 +112,8 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   $scope.getWages = function(){
     $scope.getWagesForUser(0);
     $scope.getWagesForUser(1);
-    $scope.getProspectsFor0();
-    $scope.getProspectsFor1();
+    $scope.getProspectsForUser(0);
+    $scope.getProspectsForUser(1);
     $scope.getEducation();
   }
 
@@ -131,7 +131,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       .success(function(data)
       {
         angular.forEach(data.series[0].breakdown, function(row, index){
-          $scope.wages[i][row.region] = row.estpay;
+          $scope.wages[i][$scope.regionAsheIndexToOurIndex(row.region)-1] = row.estpay;
           totalWages += row.estpay;
         });
 
@@ -150,19 +150,19 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
     });
   };
 
-  $scope.getProspectsFor0 = function(){
-    SOC.get('http://api.lmiforall.org.uk/api/v1/wf/predict/breakdown/region?soc=' + $scope.users[1].jobCode + '&maxYear=2015')
+  $scope.getProspectsForUser = function(index){
+    SOC.get('http://api.lmiforall.org.uk/api/v1/wf/predict/breakdown/region?soc=' + $scope.users[index].jobCode + '&maxYear=2015')
       .success(function(data){
         var totalProspects = 0;
         angular.forEach(data.predictedEmployment[0].breakdown, function(e, i){
-          $scope.prospects[0][e.code] = e.employment;
+          $scope.prospects[index][e.code-1] = e.employment;
           totalProspects += e.employment;
         });
 
         for (var r = 0; r < $scope.prospects[0].length; r++)
         {
-          $scope.prospects[0][r] = $scope.prospects[0][r]/totalProspects;
-          $scope.prospects[0][r] = parseFloat($scope.prospects[0][r].toFixed(4));        
+          $scope.prospects[index][r] = $scope.prospects[index][r]/totalProspects;
+          $scope.prospects[index][r] = parseFloat($scope.prospects[index][r].toFixed(4));        
         }
 
       })
@@ -171,25 +171,6 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       });
   };
 
-  $scope.getProspectsFor1 = function(){
-    SOC.get('http://api.lmiforall.org.uk/api/v1/wf/predict/breakdown/region?soc=' + $scope.users[1].jobCode + '&maxYear=2015')
-      .success(function(data){
-        var totalProspects = 0;
-        angular.forEach(data.predictedEmployment[0].breakdown, function(e, i){
-          $scope.prospects[1][e.code] = e.employment;
-          totalProspects += e.employment;
-        });
-        for (var r = 0; r < $scope.prospects[1].length; r++)
-        {
-          $scope.prospects[1][r] = $scope.prospects[1][r]/totalProspects;
-          $scope.prospects[1][r] = parseFloat($scope.prospects[1][r].toFixed(4));        
-        }
-
-      })
-      .error(function(data){
-        console.error("Error:", data);
-      });
-  };
 
   $scope.getEducation = function(){
     SOC.get('http://opendatacommunities.org/sparql.json?query=PREFIX+finance%3A+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Ffinance%2F%3E%0D%0APREFIX+qb%3A+%3Chttp%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23%3E%0D%0APREFIX+housing%3A+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Fhousing%2F%3E%0D%0APREFIX+gov%3A+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Flocal-government%2F%3E%0D%0APREFIX+sdmx%3A+%3Chttp%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fdimension%23%3E%0D%0A%0D%0A%0D%0Aselect+%3Fregion+%28SUM%28%3Fspend%29+as+%3Fs%29+where+%7B%0D%0A%3Fobs+finance%3Aauthority+%3Fdistricts+.%0D%0A%3Fdistricts+%3Chttp%3A%2F%2Fstatistics.data.gov.uk%2Fdef%2Fadministrative-geography%2Fregion%3E+%3Fregion+.%0D%0A%3Fobs+finance%3AserviceExpenditureCategory+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Ffinance%2Fconcept%2Fservice-expenditure-category%2F190%3E+.%0D%0A%3Fobs+qb%3AdataSet+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdata%2Fservice-expenditure%3E+.%0D%0A%3Fobs+finance%3ArevenueAccountBudgetCategory+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdef%2Ffinance%2Fconcept%2Frevenue-account-budget-category%2Fnet-total-cost%3E+.%0D%0A%3Fobs+finance%3Aamount+%3Fspend+.%0D%0A%3Fh+qb%3AdataSet+%3Chttp%3A%2F%2Fopendatacommunities.org%2Fdata%2Fhouseholds-2008%3E+.%0D%0A%3Fh+sdmx%3ArefArea+%3Farea+.%0D%0A%3Farea+gov%3AisGovernedBy+%3Fdistricts+.%0D%0A%3Fh+housing%3Ahouseholds+%3Fhouseholds%0D%0A%7D%0D%0Agroup+by+%3Fregion')
@@ -221,12 +202,29 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
     var bestRegionValue = 0;
     for(var index = 0; index < $scope.resultMatrix.length-1; index++)
     {
+      chart1.data.rows[index] = {c:[{}]};
+      //chart1.data.rows[index].c[index][0] = {v: $scope.regionIndexToRegionName(index)};
+      chart1.data.rows[index].c[0] = {v: $scope.regionIndexToRegionName(index)};
+
       var val = 0;
+
       val += $scope.wages[0][index] * $scope.metrics.wages;
+      chart1.data.rows[index].c[1] = {v: $scope.wages[0][index] * $scope.metrics.wages};      
+
       val += $scope.wages[1][index] * $scope.metrics.wages;
+      chart1.data.rows[index].c[2] = {v: $scope.wages[1][index] * $scope.metrics.wages};      
+
+
       val += $scope.prospects[0][index] * $scope.metrics.prospects;
+      chart1.data.rows[index].c[3] = {v: $scope.prospects[0][index] * $scope.metrics.prospects};      
+
+
       val += $scope.prospects[1][index] * $scope.metrics.prospects;
+      chart1.data.rows[index].c[4] = {v: $scope.prospects[1][index] * $scope.metrics.prospects};
+
       val += $scope.education[index]    * $scope.metrics.education;
+      chart1.data.rows[index].c[5] = {v: $scope.education[index] * $scope.metrics.education};
+
       $scope.resultMatrix[index] = val;    
       
       if (val > bestRegionValue)
@@ -235,6 +233,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         bestRegionValue = val;
       }
     }
+    bestRegion += 1;
     if (bestRegion != -1)
     {
       $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
@@ -246,15 +245,15 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
     var l = letter;
     switch(l.toLowerCase())
     {
-      case 'h': return 0; // London
-      case 'a': return 1; // North East
-      case 'b': return 2; // North West
-      case 'd': return 4; // Yorkshire & Humberside
-      case 'e': return 5; // East Midlands
-      case 'f': return 6; // West Midlands
-      case 'g': return 7; // Eastern
-      case 'j': return 9; // South East
-      case 'k': return 10;// South West
+      case 'h': return 1; // London
+      case 'a': return 9; // North East
+      case 'b': return 8; // North West
+      case 'd': return 7; // Yorkshire & Humberside
+      case 'e': return 6; // East Midlands
+      case 'f': return 5; // West Midlands
+      case 'g': return 3; // Eastern
+      case 'j': return 2; // South East
+      case 'k': return 4;// South West
       default: return -1; // sorry: Scotland, Wales, NI
     };
   };
@@ -263,67 +262,65 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   {
     switch(index)
     {
-      case 0: return 'London';
-      case 1: return 'North East';
-      case 2: return  'North West';
-      case 3: return '????';
-      case 4: return 'Yorkshire & Humberside';
-      case 5: 'East Midlands';
-      case 6: 'West Midlands';
-      case 7: 'Eastern';
-      case 8: '?????';
-      case 9: 'South East';
-      case 10: 'South West';
+      case 1: return 'London';
+      case 2: return  'South East';
+      case 3: return 'Eastern';
+      case 4: return 'South West';
+      case 5: return 'West Midlands';
+      case 6: return 'East Midlands';
+      case 7: return 'Yorkshire & Humberside';
+      case 8: return 'North West';
+      case 9: return 'North East';
       case 10: return 'Wales';
-      case 12: return 'Scotland';
-      case 13: return 'Northern Ireland';
+      case 11: return 'Scotland';
+      case 12: return 'Northern Ireland';
     };
   };
 
+  $scope.regionAsheIndexToOurIndex = function(index)
+  {
+    switch(index)
+    {
+      case 0: return 1; // London
+      case 9: return 2; // south east
+      case 7: return 3; // Eastern
+      case 10: return 4; // South West
+      case 6: return 5; // West Midlands
+      case 5: return 6; // East Midlands
+      case 4: return 7; // Yorkshire & The Humbder
+      case 2: return 8; // North West
+      case 1: return 9; // North East
+      case 11: return 10; // Wales
+      case 12: return 11; // Scotland
+      case 13: return 12; // Northern Ireland
+    };
+  };
+
+
      var chart1 = {};
     chart1.type = "ColumnChart";
-    chart1.cssStyle = "height:200px; width:300px;";
+    chart1.cssStyle = "height:600px; width:600px;";
     chart1.data = {"cols": [
-        {id: "month", label: "Month", type: "string"},
-        {id: "laptop-id", label: "Laptop", type: "number"},
-        {id: "desktop-id", label: "Desktop", type: "number"},
-        {id: "server-id", label: "Server", type: "number"},
-        {id: "cost-id", label: "Shipping", type: "number"}
+        {id: "region", label: "Region", type: "string"},
+        {id: "wage0", label: "Wage Zero", type: "number"},
+        {id: "wage1", label: "Wage One", type: "number"},
+        {id: "prospects0", label: "Prospects Zero", type: "number"},
+        {id: "prospects1", label: "Prospect One", type: "number"},
+        {id: "education", label: "Education", type: "number"}
     ], "rows": [
-        {c: [
-            {v: "January"},
-            {v: 19, f: "42 items"},
-            {v: 12, f: "Ony 12 items"},
-            {v: 7, f: "7 servers"},
-            {v: 4}
-        ]},
-        {c: [
-            {v: "February"},
-            {v: 13},
-            {v: 1, f: "1 unit (Out of stock this month)"},
-            {v: 12},
-            {v: 2}
-        ]},
-        {c: [
-            {v: "March"},
-            {v: 24},
-            {v: 0},
-            {v: 11},
-            {v: 6}
-
-        ]}
     ]};
+  
 
     chart1.options = {
-        "title": "Sales per month",
+        "title": "Region Score Breakdown",
         "isStacked": "true",
         "fill": 20,
         "displayExactValues": true,
         "vAxis": {
-            "title": "Sales unit", "gridlines": {"count": 6}
+            "title": "Score", "gridlines": {"count": 6}
         },
         "hAxis": {
-            "title": "Date"
+            "title": "Region"
         }
     };
 
