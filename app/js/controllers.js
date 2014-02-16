@@ -205,6 +205,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       chart1.data.rows[index] = {c:[{}]};
       //chart1.data.rows[index].c[index][0] = {v: $scope.regionIndexToRegionName(index)};
       chart1.data.rows[index].c[0] = {v: $scope.regionIndexToRegionName(index)};
+      console.log(index + ":" + $scope.regionIndexToRegionName(index));
 
       var val = 0;
 
@@ -233,7 +234,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         bestRegionValue = val;
       }
     }
-    bestRegion += 1;
+    
     if (bestRegion != -1)
     {
       $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
@@ -262,18 +263,18 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   {
     switch(index)
     {
-      case 1: return 'London';
-      case 2: return  'South East';
-      case 3: return 'Eastern';
-      case 4: return 'South West';
-      case 5: return 'West Midlands';
-      case 6: return 'East Midlands';
-      case 7: return 'Yorkshire & Humberside';
-      case 8: return 'North West';
+      case 0: return 'London';
+      case 1: return  'South East';
+      case 2: return 'Eastern';
+      case 3: return 'South West';
+      case 4: return 'West Midlands';
+      case 5: return 'East Midlands';
+      case 6: return 'Yorkshire & Humberside';
+      case 7: return 'North West';
       case 9: return 'North East';
-      case 10: return 'Wales';
-      case 11: return 'Scotland';
-      case 12: return 'Northern Ireland';
+      case 9: return 'Wales';
+      case 10: return 'Scotland';
+      case 11: return 'Northern Ireland';
     };
   };
 
