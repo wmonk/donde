@@ -2,6 +2,8 @@
 <html lang="en" ng-app="projectTurkey">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
   <title>Project Turkey</title>
   
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -9,22 +11,21 @@
   <script src="lib/angular/angular.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/bootstrap.min.js"></script>
-  
+
 </head>
 <body>
-
+  <div class="container">
+      <h2>App of Life</h2>
+  </div>
   <div ng-controller="dataInput">
 
     <ul ng-repeat="user in users">
-      <li>
-        <input type="text" ng-model="users[$index].age"> <br>
-        Age: {{ user.age }}
-      </li>
-      <li>
+      <input type="text" ng-model="users[$index].age" class="form-control"> <br> Age: {{ user.age }}<br/>
+      
 
-        <input type="text" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()">
+        <input type="text" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()" class="form-control"><br/>
 
-        <select ng-model="users[$index].jobCode">
+        <select ng-model="users[$index].jobCode"  class="form-control">
           <option value="0" selected="selected">Select a job...</option>
           <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
         </select>
@@ -35,7 +36,7 @@
         Soc: {{ user.jobCode }}
       </li>
       <li>
-        <select ng-model="users[$index].gender">
+        <select ng-model="users[$index].gender" class="form-control">
           <option value="1">Male</option>
           <option value="2">Female</option>
         </select>
