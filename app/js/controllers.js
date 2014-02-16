@@ -118,9 +118,18 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   }
 
   $scope.getWagesForUser = function(i) {
-    SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender + '&breakdown=region')
-      .success(function(data){
-        var totalWages = 0;
+    
+    // call without region to get LONDON data
+    SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender).success(function(data)
+    {
+      var totalWages = 0; 
+      $scope.wages[i][0] = data.series[0].estpay;
+      totalWages += data.series[0].estpay;
+
+      //now get the rest of the regions
+      SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender + '&breakdown=region')
+      .success(function(data)
+      {
         angular.forEach(data.series[0].breakdown, function(row, index){
           $scope.wages[i][row.region] = row.estpay;
           totalWages += row.estpay;
@@ -138,6 +147,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       .error(function(data){
         console.error("Error:", data);
       });
+    });
   };
 
   $scope.getProspectsFor0 = function(){
