@@ -102,7 +102,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   ];
 
   $scope.education = [null, null, null, null, null, null, null, null, null, null, null, null,null];
-
+  $scope.expenditure = [null, null, null, null, null, null, null, null, null, null, null, null,null];
 
   $scope.resultMatrix =[null, null, null, null, null, null, null, null, null, null, null, null,null];
 
@@ -115,6 +115,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
     $scope.getProspectsForUser(0);
     $scope.getProspectsForUser(1);
     $scope.getEducation();
+    $scope.getExpenditure();
   }
 
   $scope.getWagesForUser = function(i) {
@@ -195,6 +196,17 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         console.error("Error:", data);
       });
   };
+  $scope.getExpenditure = function()
+  {
+    // expenditure data: http://www.ons.gov.uk/ons/rel/family-spending/family-spending/family-spending-2012-edition/art-chapter-1--overview.html#tab-Household-expenditure-by-region
+    SOC.get('data/expenditure.json')
+    .success(function(data){
+      angular.forEach(data, function (object, key)
+      {
+        $scope.expenditure[object.region] =parseFloat(((1/object.expenditure)*100).toFixed(4));
+      });
+    });
+  };
 
   $scope.getLifePlan = function()
   {
@@ -271,7 +283,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       case 5: return 'East Midlands';
       case 6: return 'Yorkshire & Humberside';
       case 7: return 'North West';
-      case 9: return 'North East';
+      case 8: return 'North East';
       case 9: return 'Wales';
       case 10: return 'Scotland';
       case 11: return 'Northern Ireland';
