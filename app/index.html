@@ -30,7 +30,6 @@
           <option value="0" selected="selected">Select a job...</option>
           <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
         </select>
-
         Occupation: {{ user.jobTitle }}
       </li>
       <li>
@@ -88,7 +87,7 @@
     <pre>
       {{education}}
     </pre>
-    <button ng-click="getWages()">Get Wages</button>
+    <b utton ng-click="getWages()">Get Wages</button>
   <hr/>
   <button ng-click="getLifePlan()">Calculate LIFE PLAN</button>
   <pre>{{resultMatrix}}</pre>
@@ -97,8 +96,6 @@
   <div>
     <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
   </div>
-
-
   </div>
   <br/>
   </body>

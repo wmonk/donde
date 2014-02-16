@@ -234,7 +234,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         bestRegionValue = val;
       }
     }
-    
+
     if (bestRegion != -1)
     {
       $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
