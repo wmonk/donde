@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var projectTurkey = angular.module('projectTurkey',['googlechart']);
+var projectTurkey = angular.module('projectTurkey',['googlechart', 'ngTouch']);
 
 projectTurkey.factory('SOC', ['$http', function ($http) {
   return {
@@ -12,38 +12,38 @@ projectTurkey.factory('SOC', ['$http', function ($http) {
 }]);
 
 projectTurkey.service('appData', function(){
-  // this.users = [
-  //   {
-  //     'age': 0,
-  //     'jobTitle' : '',
-  //     'jobCode': 0,
-  //     'gender': 1
-  //   },
-  //   {
-  //     'age': 0,
-  //     'jobTitle' : '',
-  //     'jobCode': 0,
-  //     'gender': 1
-  //   }
-  // ];
   this.users = [
     {
-      'age': 23,
+      'age': 0,
       'jobTitle' : '',
-      'jobCode': 3421,
+      'jobCode': 0,
       'gender': 1
     },
     {
-      'age': 22,
+      'age': 0,
       'jobTitle' : '',
-      'jobCode': 2472,
-      'gender': 2
+      'jobCode': 0,
+      'gender': 1
     }
   ];
+  // this.users = [
+  //   {
+  //     'age': 23,
+  //     'jobTitle' : '',
+  //     'jobCode': 3421,
+  //     'gender': 1
+  //   },
+  //   {
+  //     'age': 22,
+  //     'jobTitle' : '',
+  //     'jobCode': 2472,
+  //     'gender': 2
+  //   }
+  // ];
   this.metrics = {
-      'wages': 1,
-      'prospects': 1,
-      'education': 1
+      'wages': 0,
+      'prospects': 0,
+      'education': 0
     };
 })
 
@@ -51,7 +51,7 @@ projectTurkey.controller('dataInput', ['$scope', 'SOC', 'appData', function($sco
 
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
-  $scope.jobCodesTemp = [];
+  $scope.jobCodesTemp = [[], []];
   $scope.writing = 0;
 
   $scope.getSoc0 = function() {
@@ -66,28 +66,52 @@ projectTurkey.controller('dataInput', ['$scope', 'SOC', 'appData', function($sco
       $scope.jobCodesTemp[1] = data;
     });
   };
-
+  $scope.partner = true;
+  $scope.userPartner = function(i){
+    if (i === 0) {
+      return true;
+    }
+    if ($scope.partner) {
+      return true;
+    }else{
+      return false;
+    }
+  }
 }]);
 
 projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SOC, appData){
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
 
-  $scope.maxTokens = 14;
+  $scope.maxTokens = 15;
   $scope.tokensUsed = 0;
   $scope.maxWages = 15;
   $scope.maxProspects = 15;
   $scope.maxEducation = 15;
-  $scope.limitTokens = function(){
-    $scope.maxWages = (parseInt($scope.maxTokens) - parseInt($scope.tokensUsed)) + parseInt($scope.metrics.wages);
-    $scope.maxProspects = (parseInt($scope.maxTokens) - parseInt($scope.tokensUsed)) + parseInt($scope.metrics.prospects);
-    $scope.maxEducation = (parseInt($scope.maxTokens) - parseInt($scope.tokensUsed)) + parseInt($scope.metrics.education);
-    $scope.tokensUsed = parseInt($scope.metrics.wages) + parseInt($scope.metrics.prospects) + parseInt($scope.metrics.education);
+  $scope.addTokenTo = function(what){
+    $scope.limitTokens();
+    if ($scope.metrics[what] >= 15 || $scope.tokensUsed === 15) {
+      return;
+    }
+    $scope.metrics[what]++;
   }
-}])
+  $scope.removeTokenFrom = function(what){
+    $scope.limitTokens();
+    if ($scope.metrics[what] <= 0) {
+      return;
+    }
+    $scope.metrics[what]--;
+  }
+  $scope.limitTokens = function(){
+    $scope.tokensUsed = parseInt($scope.metrics.wages, 10) + parseInt($scope.metrics.prospects, 10) + parseInt($scope.metrics.education, 10);
+    $scope.maxWages = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.wages, 10);
+    $scope.maxProspects = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.prospects, 10);
+    $scope.maxEducation = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.education, 10);
+  };
+}]);
 
 projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function($scope, SOC, appData){
-  
+
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
 
@@ -118,11 +142,11 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   }
 
   $scope.getWagesForUser = function(i) {
-    
+
     // call without region to get LONDON data
     SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender).success(function(data)
     {
-      var totalWages = 0; 
+      var totalWages = 0;
       $scope.wages[i][0] = data.series[0].estpay;
       totalWages += data.series[0].estpay;
 
@@ -162,7 +186,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         for (var r = 0; r < $scope.prospects[0].length; r++)
         {
           $scope.prospects[index][r] = $scope.prospects[index][r]/totalProspects;
-          $scope.prospects[index][r] = parseFloat($scope.prospects[index][r].toFixed(4));        
+          $scope.prospects[index][r] = parseFloat($scope.prospects[index][r].toFixed(4));
         }
 
       })
@@ -184,11 +208,11 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
             $scope.education[index] = parseInt(object.s.value);
             totalEducation += parseInt(object.s.value);
           }
-        }); 
+        });
         for (var i = 0; i < $scope.education.length; i++)
         {
           $scope.education[i] = $scope.education[i] / totalEducation;
-          $scope.education[i] = parseFloat($scope.education[i].toFixed(4)); 
+          $scope.education[i] = parseFloat($scope.education[i].toFixed(4));
         }
       })
       .error(function(data){
@@ -210,14 +234,14 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       var val = 0;
 
       val += $scope.wages[0][index] * $scope.metrics.wages;
-      chart1.data.rows[index].c[1] = {v: $scope.wages[0][index] * $scope.metrics.wages};      
+      chart1.data.rows[index].c[1] = {v: $scope.wages[0][index] * $scope.metrics.wages};
 
       val += $scope.wages[1][index] * $scope.metrics.wages;
-      chart1.data.rows[index].c[2] = {v: $scope.wages[1][index] * $scope.metrics.wages};      
+      chart1.data.rows[index].c[2] = {v: $scope.wages[1][index] * $scope.metrics.wages};
 
 
       val += $scope.prospects[0][index] * $scope.metrics.prospects;
-      chart1.data.rows[index].c[3] = {v: $scope.prospects[0][index] * $scope.metrics.prospects};      
+      chart1.data.rows[index].c[3] = {v: $scope.prospects[0][index] * $scope.metrics.prospects};
 
 
       val += $scope.prospects[1][index] * $scope.metrics.prospects;
@@ -226,15 +250,15 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       val += $scope.education[index]    * $scope.metrics.education;
       chart1.data.rows[index].c[5] = {v: $scope.education[index] * $scope.metrics.education};
 
-      $scope.resultMatrix[index] = val;    
-      
+      $scope.resultMatrix[index] = val;
+
       if (val > bestRegionValue)
       {
         bestRegion = index;
         bestRegionValue = val;
       }
     }
-    
+
     if (bestRegion != -1)
     {
       $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
@@ -271,7 +295,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       case 5: return 'East Midlands';
       case 6: return 'Yorkshire & Humberside';
       case 7: return 'North West';
-      case 9: return 'North East';
+      case 8: return 'North East';
       case 9: return 'Wales';
       case 10: return 'Scotland';
       case 11: return 'Northern Ireland';
@@ -300,7 +324,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
 
      var chart1 = {};
     chart1.type = "ColumnChart";
-    chart1.cssStyle = "height:600px; width:600px;";
+    chart1.cssStyle = "height:600px; width:100%;";
     chart1.data = {"cols": [
         {id: "region", label: "Region", type: "string"},
         {id: "wage0", label: "Wage Zero", type: "number"},
@@ -310,7 +334,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         {id: "education", label: "Education", type: "number"}
     ], "rows": [
     ]};
-  
+
 
     chart1.options = {
         "title": "Region Score Breakdown",
@@ -331,4 +355,3 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
 
 
 }]);
-
