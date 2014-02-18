@@ -12,12 +12,14 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-touch.min.js"></script>
+
   <script src="js/controllers.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/ui-bootstrap-tpls-0.10.0.min.js"></script>
   <script src="js/ng-google-chart.js"></script>
 </head>
 <body>
-  <div class="navbar navbar-inverse">
+  <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <span class="navbar-brand">App of Life</span>
     </div>
@@ -38,43 +40,34 @@
         <div class="form-group">
           <label for="userOneJob" class="col-xs-2 control-label">Job:</label>
           <div class="col-xs-10">
-            <input type="text" class="form-control" id="userOneJob" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-xs-12">
-            <select ng-model="users[$index].jobCode" class="form-control">
-              <option value="" selected="selected">Select a job...</option>
-              <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
-            </select>
-
+            <input type="text" class="form-control" id="userOneJob" typeahead="job.jobTitle for job in getSoc($index, $viewValue)" typeahead-min-length="1" ng-model="user.jobTitle" ng-change="getSoc{{$index}}()" typeahead-on-select="setSoc($index, $item)">
           </div>
         </div>
       </div>
     </div>
+    <a href="#tokens" class="btn btn-primary">On to tokens</a>
   </div>
 
-  <div ng-controller="usa" class="container">
+  <div ng-controller="usa" class="container" id="tokens">
     <h2>Tokens</h2>
     <p>Tokens Left: {{ maxTokens - tokensUsed }}</p>
     <h5>Wages</h5>
     <div class="input-group">
-      <a class="input-group-addon" ng-click="removeTokenFrom('wages')">-</a>
-      <input type="tel" min="0" max="{{ maxWages }}" ng-model="metrics.wages" ng-change="limitTokens()" class="form-control">
-      <a class="input-group-addon" ng-click="addTokenTo('wages')">+</a>
+      <span class="input-group-addon" ng-click="removeTokenFrom('wages')">-</span>
+      <input type="tel" min="0" max="{{ maxWages }}" ng-model="metrics.wages" ng-change="limitTokens()" class="form-control" disabled="true">
+      <span class="input-group-addon" ng-click="addTokenTo('wages')">+</span>
     </div>
     <h5>Prospects</h5>
     <div class="input-group">
-      <a class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</a>
-      <input type="tel" min="0" max="{{ maxProspects }}" ng-model="metrics['prospects']" ng-change="limitTokens()" class="form-control">
-      <a class="input-group-addon" ng-click="addTokenTo('prospects')">+</a>
+      <span class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</span>
+      <input type="tel" min="0" max="{{ maxProspects }}" ng-model="metrics['prospects']" ng-change="limitTokens()" class="form-control"  disabled="true">
+      <span class="input-group-addon" ng-click="addTokenTo('prospects')">+</span>
     </div>
     <h5>Education</h5>
     <div class="input-group">
-      <a class="input-group-addon" ng-click="removeTokenFrom('education')">-</a>
-      <input type="tel" min="0" max="{{ maxEducation }}" ng-model="metrics['education']" ng-change="limitTokens()" class="form-control">
-      <a class="input-group-addon" ng-click="addTokenTo('education')">+</a>
+      <span class="input-group-addon" ng-click="removeTokenFrom('education')">-</span>
+      <input type="tel" min="0" max="{{ maxEducation }}" ng-model="metrics['education']" ng-change="limitTokens()" class="form-control"  disabled="true">
+      <span class="input-group-addon" ng-click="addTokenTo('education')">+</span>
     </div>
   </div>
 
@@ -88,8 +81,6 @@
   <div>
     <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
   </div>
-
-
   </div>
   <br/>
   </body>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" ng-app="projectTurkey">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <title>Project Turkey</title>
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/turkey.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-touch.min.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/ng-google-chart.js"></script>
+</head>
+<body>
+  <div class="navbar navbar-inverse">
+    <div class="container">
+      <span class="navbar-brand">App of Life</span>
+    </div>
+  </div>
+
+  <div ng-controller="dataInput" class="container">
+    <div ng-repeat="user in users">
+      <h2>{{ $index === 0 ? "You" : "Partner?" }}
+      </h2>
+      <div class="form-horizontal" ng-show="userPartner($index)">
+        <div class="form-group">
+          <label for="userOneAge" class="col-xs-2 control-label">Age:</label>
+          <div class="col-xs-10">
+            <input type="tel" class="form-control" id="userOneAge" ng-model="users[$index].age">
+          </div>
+        </div>
+
+<<<<<<< HEAD
+        <div class="form-group">
+          <label for="userOneJob" class="col-xs-2 control-label">Job:</label>
+          <div class="col-xs-10">
+            <input type="text" class="form-control" id="userOneJob" ng-model="users[$index].jobTitle" ng-change="getSoc{{$index}}()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <select ng-model="users[$index].jobCode" class="form-control">
+              <option value="" selected="selected">Select a job...</option>
+              <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
+            </select>
+=======
+        <select ng-model="users[$index].jobCode"  class="form-control">
+          <option value="0" selected="selected">Select a job...</option>
+          <option ng-repeat="soc in jobCodesTemp[$index]" value="{{soc.soc}}">{{soc.title}}</option>
+        </select>
+        Occupation: {{ user.jobTitle }}
+      </li>
+      <li>
+        Soc: {{ user.jobCode }}
+      </li>
+      <li>
+        <select ng-model="users[$index].gender" class="form-control">
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+        </select>
+        Gender: {{ user.gender }}
+      </li>
+    </ul>
+
+    <pre>
+      User 1: {{
+        users[0]
+      }}
+      --
+      User 2: {{
+        users[1]
+      }}
+    </pre>
+>>>>>>> origin/master
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-controller="usa" class="container">
+    <h2>Tokens</h2>
+    <p>Tokens Left: {{ maxTokens - tokensUsed }}</p>
+    <h5>Wages</h5>
+    <div class="input-group">
+      <a class="input-group-addon" ng-click="removeTokenFrom('wages')">-</a>
+      <input type="tel" min="0" max="{{ maxWages }}" ng-model="metrics.wages" ng-change="limitTokens()" class="form-control">
+      <a class="input-group-addon" ng-click="addTokenTo('wages')">+</a>
+    </div>
+    <h5>Prospects</h5>
+    <div class="input-group">
+      <a class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</a>
+      <input type="tel" min="0" max="{{ maxProspects }}" ng-model="metrics['prospects']" ng-change="limitTokens()" class="form-control">
+      <a class="input-group-addon" ng-click="addTokenTo('prospects')">+</a>
+    </div>
+    <h5>Education</h5>
+    <div class="input-group">
+      <a class="input-group-addon" ng-click="removeTokenFrom('education')">-</a>
+      <input type="tel" min="0" max="{{ maxEducation }}" ng-model="metrics['education']" ng-change="limitTokens()" class="form-control">
+      <a class="input-group-addon" ng-click="addTokenTo('education')">+</a>
+    </div>
+  </div>
+
+  <div ng-controller="calculateDeets">
+<<<<<<< HEAD
+    <button ng-click="getWages()">Get Wages</button>
+=======
+    <pre>
+      {{ wages }}
+    </pre>
+    <pre>
+      {{ prospects }}
+    </pre>
+    <pre>
+      {{education}}
+    </pre>
+    <pre>{{expenditure}}</pre>
+    <b utton ng-click="getWages()">Get Wages</button>
+>>>>>>> origin/master
+  <hr/>
+  <button ng-click="getLifePlan()">Calculate LIFE PLAN</button>
+  <pre>{{resultMatrix}}</pre>
+  <h1>{{message}}</h1>
+  <BR/>
+  <div>
+    <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+  </div>
+  </div>
+  <br/>
+  </body>
+</html>

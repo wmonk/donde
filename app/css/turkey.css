@@ -1,3 +1,35 @@
-body{
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300);
 
+html, body{
+  height: 100%;
+}
+body{
+  width: 100%;
+  margin-top: 45px;
+  font-family: 'Roboto Slab';
+  font-weight: 300;
+}
+.navbar-brand{
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  font-weight: 300;
+  font-size: 1.2em;
+}
+h2{
+  font-size: 1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.container{
+  height: 100%;
+}
+span.input-group-addon{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var projectTurkey = angular.module('projectTurkey',['googlechart', 'ngTouch']);
+var projectTurkey = angular.module('projectTurkey',['googlechart', 'ngTouch', 'ui.bootstrap']);
 
 projectTurkey.factory('SOC', ['$http', function ($http) {
   return {
@@ -14,7 +14,7 @@ projectTurkey.factory('SOC', ['$http', function ($http) {
 projectTurkey.service('appData', function(){
   this.users = [
     {
-      'age': 0,
+      'age': null,
       'jobTitle' : '',
       'jobCode': 0,
       'gender': 1
@@ -45,25 +45,27 @@ projectTurkey.service('appData', function(){
       'prospects': 0,
       'education': 0
     };
-})
+});
 
-projectTurkey.controller('dataInput', ['$scope', 'SOC', 'appData', function($scope, SOC, appData){
+projectTurkey.controller('dataInput', ['$scope', 'SOC', 'appData', '$http', function($scope, SOC, appData, $http){
 
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
-  $scope.jobCodesTemp = [[], []];
-  $scope.writing = 0;
 
-  $scope.getSoc0 = function() {
-    SOC.get('http://api.lmiforall.org.uk/api/v1/soc/search?q=' + $scope.users[0].jobTitle)
-    .success(function(data) {
-      $scope.jobCodesTemp[0] = data;
-    });
-  };
-  $scope.getSoc1 = function() {
-    SOC.get('http://api.lmiforall.org.uk/api/v1/soc/search?q=' + $scope.users[1].jobTitle)
-    .success(function(data) {
-      $scope.jobCodesTemp[1] = data;
+  $scope.setSoc = function(i, item){
+    $scope.users[i].jobCode = item.jobCode;
+  }
+  $scope.getSoc = function(i, item){
+    return $http.get('http://api.lmiforall.org.uk/api/v1/soc/search', {
+      params: {
+        q: item,
+      }
+    }).then(function(data){
+      var jobs = [];
+      angular.forEach(data.data, function(item){
+        jobs.push({jobTitle: item.title, jobCode: item.soc});
+      });
+      return jobs;
     });
   };
   $scope.partner = true;
@@ -126,7 +128,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   ];
 
   $scope.education = [null, null, null, null, null, null, null, null, null, null, null, null,null];
-
+  $scope.expenditure = [null, null, null, null, null, null, null, null, null, null, null, null,null];
 
   $scope.resultMatrix =[null, null, null, null, null, null, null, null, null, null, null, null,null];
 
@@ -139,6 +141,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
     $scope.getProspectsForUser(0);
     $scope.getProspectsForUser(1);
     $scope.getEducation();
+    $scope.getExpenditure();
   }
 
   $scope.getWagesForUser = function(i) {
@@ -218,6 +221,17 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       .error(function(data){
         console.error("Error:", data);
       });
+  };
+  $scope.getExpenditure = function()
+  {
+    // expenditure data: http://www.ons.gov.uk/ons/rel/family-spending/family-spending/family-spending-2012-edition/art-chapter-1--overview.html#tab-Household-expenditure-by-region
+    SOC.get('data/expenditure.json')
+    .success(function(data){
+      angular.forEach(data, function (object, key)
+      {
+        $scope.expenditure[object.region] =parseFloat(((1/object.expenditure)*100).toFixed(4));
+      });
+    });
   };
 
   $scope.getLifePlan = function()
