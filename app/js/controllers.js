@@ -162,7 +162,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       .success(function(data)
       {
         angular.forEach(data.series[0].breakdown, function(row, index){
-          $scope.wages[i][$scope.regionAsheIndexToOurIndex(row.region)-1] = row.estpay;
+          $scope.wages[i][$scope.regionAsheIndexToOurIndex(row.region)] = row.estpay;
           totalWages += row.estpay;
         });
 
@@ -186,7 +186,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       .success(function(data){
         var totalProspects = 0;
         angular.forEach(data.predictedEmployment[0].breakdown, function(e, i){
-          $scope.prospects[index][e.code-1] = e.employment;
+          $scope.prospects[index][$scope.wfIndexToOurIndex(e.code)] = e.employment;
           totalProspects += e.employment;
         });
 
@@ -276,7 +276,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
     $scope.results = $filter('orderBy')($scope.results, '-totalScore'); 
     console.log($scope.results);
-    var resultsInGraph = 3;
+    var resultsInGraph = 12;
     for (var r = 0; r < resultsInGraph; r++)
     {
       chart1.data.rows[r] = {c:[{}]}; 
@@ -297,15 +297,15 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     var l = letter;
     switch(l.toLowerCase())
     {
-      case 'h': return 1; // London
-      case 'a': return 9; // North East
-      case 'b': return 8; // North West
-      case 'd': return 7; // Yorkshire & Humberside
-      case 'e': return 6; // East Midlands
-      case 'f': return 5; // West Midlands
-      case 'g': return 3; // Eastern
-      case 'j': return 2; // South East
-      case 'k': return 4;// South West
+      case 'h': return 0; // London
+      case 'a': return 8; // North East
+      case 'b': return 7; // North West
+      case 'd': return 6; // Yorkshire & Humberside
+      case 'e': return 5; // East Midlands
+      case 'f': return 4; // West Midlands
+      case 'g': return 2; // Eastern
+      case 'j': return 1; // South East
+      case 'k': return 3;// South West
       default: return -1; // sorry: Scotland, Wales, NI
     };
   };
@@ -333,19 +333,24 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
   {
     switch(index)
     {
-      case 0: return 1; // London
-      case 9: return 2; // south east
-      case 7: return 3; // Eastern
-      case 10: return 4; // South West
-      case 6: return 5; // West Midlands
-      case 5: return 6; // East Midlands
-      case 4: return 7; // Yorkshire & The Humbder
-      case 2: return 8; // North West
-      case 1: return 9; // North East
-      case 11: return 10; // Wales
-      case 12: return 11; // Scotland
-      case 13: return 12; // Northern Ireland
+      case 0: return 0; // London
+      case 9: return 1; // south east
+      case 7: return 2; // Eastern
+      case 10: return 3; // South West
+      case 6: return 4; // West Midlands
+      case 5: return 5; // East Midlands
+      case 4: return 6; // Yorkshire & The Humbder
+      case 2: return 7; // North West
+      case 1: return 8; // North East
+      case 11: return 9; // Wales
+      case 12: return 10; // Scotland
+      case 13: return 11; // Northern Ireland
     };
+  };
+
+  $scope.wfIndexToOurIndex = function(index)
+  {
+    return index-1;
   };
 
 
