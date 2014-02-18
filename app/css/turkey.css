@@ -33,3 +33,18 @@ span.input-group-addon{
   -ms-user-select: none;
   user-select: none;
 }
+
+.block
+{
+  width: 7%;
+  height: 30px;
+  margin: 0px;
+  background: white;
+  border: 1px solid black;
+  display: block;
+  float: left;
+}
+.clear
+{
+  clear: both;
+}

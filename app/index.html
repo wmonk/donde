@@ -79,6 +79,11 @@
       <input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true">
       <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
     </div>
+    <div id="expenditureGrid" width="100%">
+      <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
+        <div class="block">{{$index}}</div>
+      </div>
+    </div>
   </div>
   
   <div ng-controller="calculateDeets">

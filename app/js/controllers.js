@@ -99,6 +99,11 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
       return;
     }
     $scope.metrics[what]++;
+    
+    if(what == "expenditure")
+    {
+
+    }
   }
   $scope.removeTokenFrom = function(what){
     $scope.limitTokens();
@@ -114,6 +119,10 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
     $scope.maxEducation = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.education, 10);
     $scope.maxExpenditure = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.expenditure, 10);
   };
+
+  $scope.getNumber = function(num) {
+    return new Array(num);   
+}
 }]);
 
 projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData', function($scope, $filter, SOC, appData){
@@ -276,7 +285,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
     $scope.results = $filter('orderBy')($scope.results, '-totalScore'); 
     console.log($scope.results);
-    var resultsInGraph = 12;
+    var resultsInGraph = 5;
     for (var r = 0; r < resultsInGraph; r++)
     {
       chart1.data.rows[r] = {c:[{}]}; 
