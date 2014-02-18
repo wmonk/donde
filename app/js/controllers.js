@@ -116,24 +116,25 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
   };
 }]);
 
-projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function($scope, SOC, appData){
+projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData', function($scope, $filter, SOC, appData){
 
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
-
+  $scope.numberOfRegions = 12;
   $scope.wages = [
-    [null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    [null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null, null]
   ];
 
   $scope.prospects = [
-    [null, null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null,null]
+    [null, null, null, null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null, null, null,null]
   ];
 
-  $scope.education = [null, null, null, null, null, null, null, null, null, null, null, null,null];
-  $scope.expenditure = [null, null, null, null, null, null, null, null, null, null, null, null,null]
-  $scope.resultMatrix =[null, null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.education =    [null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.expenditure =  [null, null, null, null, null, null, null, null, null, null, null,null]
+  $scope.results =      [null, null, null, null, null, null, null, null, null, null, null,null];
+
 
 
   $scope.message = "";
@@ -165,7 +166,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
           totalWages += row.estpay;
         });
 
-        for (var r = 0; r < $scope.wages[i].length; r++)
+        for (var r = 0; r < $scope.numberOfRegions; r++)
         {
           if ($scope.wages[i][r] != null)
           {
@@ -189,7 +190,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
           totalProspects += e.employment;
         });
 
-        for (var r = 0; r < $scope.prospects[0].length; r++)
+        for (var r = 0; r < $scope.numberOfRegions; r++)
         {
           $scope.prospects[index][r] = $scope.prospects[index][r]/totalProspects;
           $scope.prospects[index][r] = parseFloat($scope.prospects[index][r].toFixed(4));
@@ -215,7 +216,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
             totalEducation += parseInt(object.s.value);
           }
         });
-        for (var i = 0; i < $scope.education.length; i++)
+        for (var i = 0; i < $scope.numberOfRegions; i++)
         {
           $scope.education[i] = $scope.education[i] / totalEducation;
           $scope.education[i] = parseFloat($scope.education[i].toFixed(4));
@@ -238,44 +239,56 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   };
 
   $scope.getLifePlan = function()
-  {
-    var bestRegion = -1;
-    var bestRegionValue = 0;
-    for(var index = 0; index < $scope.resultMatrix.length-1; index++)
+  { 
+    for(var index = 0; index < $scope.numberOfRegions; index++)
     {
-      chart1.data.rows[index] = {c:[{}]};
-      //chart1.data.rows[index].c[index][0] = {v: $scope.regionIndexToRegionName(index)};
-      chart1.data.rows[index].c[0] = {v: $scope.regionIndexToRegionName(index)};
+      $scope.results[index] = {};
+      $scope.results[index].regionIndex = index;
+      $scope.results[index].regionName = $scope.regionIndexToRegionName(index);
       
-      var val = 0;
-      val += $scope.wages[0][index] * $scope.metrics.wages;
-      val += $scope.wages[1][index] * $scope.metrics.wages;
-      chart1.data.rows[index].c[1] = {v: (($scope.wages[0][index] * $scope.metrics.wages)+($scope.wages[1][index] * $scope.metrics.wages))}; 
-      
-      val += $scope.prospects[0][index] * $scope.metrics.prospects;
-      val += $scope.prospects[1][index] * $scope.metrics.prospects;
-      chart1.data.rows[index].c[2] = {v: (($scope.prospects[0][index] * $scope.metrics.prospects)+($scope.prospects[1][index] * $scope.metrics.prospects))};
+      //wages
+      $scope.results[index].wages0Value = $scope.wages[0][index];
+      $scope.results[index].wages0Score = $scope.wages[0][index] * $scope.metrics.wages;
+      $scope.results[index].wages1Value = $scope.wages[1][index];
+      $scope.results[index].wages1Score = $scope.wages[1][index] * $scope.metrics.wages; 
+      // proscpects
+      $scope.results[index].prospects0Value = $scope.prospects[0][index];
+      $scope.results[index].prospects0Score = $scope.prospects[0][index] * $scope.metrics.prospects;
+      $scope.results[index].prospects1Value = $scope.prospects[1][index];
+      $scope.results[index].prospects1Score = $scope.prospects[1][index] * $scope.metrics.prospects;
 
-      val += $scope.education[index]    * $scope.metrics.education;
-      chart1.data.rows[index].c[3] = {v: $scope.education[index] * $scope.metrics.education};
+      // education      
+      $scope.results[index].educationValue = $scope.education[index];
+      $scope.results[index].educationScore= $scope.education[index] * $scope.metrics.education;
 
+      // expenditure
+      $scope.results[index].expenditureValue = $scope.expenditure[index];
+      $scope.results[index].expenditureScore = $scope.expenditure[index] * $scope.metrics.expenditure;
 
-      val += $scope.expenditure[index] * $scope.metrics.expenditure;
-      chart1.data.rows[index].c[4] = {v: $scope.expenditure[index] * $scope.metrics.expenditure};
-
-
-      $scope.resultMatrix[index] = val;
-
-      if (val > bestRegionValue)
-      {
-        bestRegion = index;
-        bestRegionValue = val;
-      }
+      $scope.results[index].totalScore = $scope.results[index].wages0Score
+                                        +$scope.results[index].wages1Score
+                                        +$scope.results[index].prospects0Score
+                                        +$scope.results[index].prospects1Score
+                                        +$scope.results[index].educationScore
+                                        +$scope.results[index].expenditureScore;
     }
+    
 
-    if (bestRegion != -1)
+    $scope.results = $filter('orderBy')($scope.results, '-totalScore'); 
+    console.log($scope.results);
+    var resultsInGraph = 3;
+    for (var r = 0; r < resultsInGraph; r++)
     {
-      $scope.message = "You should move to:" + $scope.regionIndexToRegionName(bestRegion);
+      chart1.data.rows[r] = {c:[{}]}; 
+      chart1.data.rows[r].c[0] = {v: $scope.results[r].regionName};
+      // wages
+      chart1.data.rows[r].c[1] = {v: ($scope.results[r].wages0Score + $scope.results[r].wages1Score)};
+      // prospects
+      chart1.data.rows[r].c[2] = {v: ($scope.results[r].prospects0Score + $scope.results[r].prospects1Score)};
+      // eduation
+      chart1.data.rows[r].c[3] = {v: $scope.results[r].educationScore};
+      // expenditure
+      chart1.data.rows[r].c[4] = {v: $scope.results[r].expenditureScore}; 
     }
   };
 
@@ -344,7 +357,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
         {id: "wages", label: "Wages", type: "number"},
         {id: "prospects", label: "Prospects", type: "number"},
         {id: "education", label: "Education", type: "number"},
-        {id: "exnditure", label: "Expenditure", type: "number"},
+        {id: "expenditure", label: "Expenditure", type: "number"},
     ], "rows": [
     ]};
 
