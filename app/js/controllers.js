@@ -43,7 +43,8 @@ projectTurkey.service('appData', function(){
   this.metrics = {
       'wages': 0,
       'prospects': 0,
-      'education': 0
+      'education': 0,
+      'expenditure' : 0
     };
 });
 
@@ -90,6 +91,8 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
   $scope.maxWages = 15;
   $scope.maxProspects = 15;
   $scope.maxEducation = 15;
+  $scope.maxExpenditure = 15;
+
   $scope.addTokenTo = function(what){
     $scope.limitTokens();
     if ($scope.metrics[what] >= 15 || $scope.tokensUsed === 15) {
@@ -105,10 +108,11 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
     $scope.metrics[what]--;
   }
   $scope.limitTokens = function(){
-    $scope.tokensUsed = parseInt($scope.metrics.wages, 10) + parseInt($scope.metrics.prospects, 10) + parseInt($scope.metrics.education, 10);
+    $scope.tokensUsed = parseInt($scope.metrics.wages, 10) + parseInt($scope.metrics.prospects, 10) + parseInt($scope.metrics.education, 10) + parseInt($scope.metrics.expenditure, 10);
     $scope.maxWages = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.wages, 10);
     $scope.maxProspects = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.prospects, 10);
     $scope.maxEducation = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.education, 10);
+    $scope.maxExpenditure = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.expenditure, 10);
   };
 }]);
 
@@ -128,8 +132,7 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
   ];
 
   $scope.education = [null, null, null, null, null, null, null, null, null, null, null, null,null];
-  $scope.expenditure = [null, null, null, null, null, null, null, null, null, null, null, null,null];
-
+  $scope.expenditure = [null, null, null, null, null, null, null, null, null, null, null, null,null]
   $scope.resultMatrix =[null, null, null, null, null, null, null, null, null, null, null, null,null];
 
 
@@ -243,26 +246,23 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
       chart1.data.rows[index] = {c:[{}]};
       //chart1.data.rows[index].c[index][0] = {v: $scope.regionIndexToRegionName(index)};
       chart1.data.rows[index].c[0] = {v: $scope.regionIndexToRegionName(index)};
-      console.log(index + ":" + $scope.regionIndexToRegionName(index));
-
+      
       var val = 0;
-
       val += $scope.wages[0][index] * $scope.metrics.wages;
-      chart1.data.rows[index].c[1] = {v: $scope.wages[0][index] * $scope.metrics.wages};
-
       val += $scope.wages[1][index] * $scope.metrics.wages;
-      chart1.data.rows[index].c[2] = {v: $scope.wages[1][index] * $scope.metrics.wages};
-
-
+      chart1.data.rows[index].c[1] = {v: (($scope.wages[0][index] * $scope.metrics.wages)+($scope.wages[1][index] * $scope.metrics.wages))}; 
+      
       val += $scope.prospects[0][index] * $scope.metrics.prospects;
-      chart1.data.rows[index].c[3] = {v: $scope.prospects[0][index] * $scope.metrics.prospects};
-
-
       val += $scope.prospects[1][index] * $scope.metrics.prospects;
-      chart1.data.rows[index].c[4] = {v: $scope.prospects[1][index] * $scope.metrics.prospects};
+      chart1.data.rows[index].c[2] = {v: (($scope.prospects[0][index] * $scope.metrics.prospects)+($scope.prospects[1][index] * $scope.metrics.prospects))};
 
       val += $scope.education[index]    * $scope.metrics.education;
-      chart1.data.rows[index].c[5] = {v: $scope.education[index] * $scope.metrics.education};
+      chart1.data.rows[index].c[3] = {v: $scope.education[index] * $scope.metrics.education};
+
+
+      val += $scope.expenditure[index] * $scope.metrics.expenditure;
+      chart1.data.rows[index].c[4] = {v: $scope.expenditure[index] * $scope.metrics.expenditure};
+
 
       $scope.resultMatrix[index] = val;
 
@@ -341,11 +341,10 @@ projectTurkey.controller('calculateDeets', ['$scope', 'SOC', 'appData', function
     chart1.cssStyle = "height:600px; width:100%;";
     chart1.data = {"cols": [
         {id: "region", label: "Region", type: "string"},
-        {id: "wage0", label: "Wage Zero", type: "number"},
-        {id: "wage1", label: "Wage One", type: "number"},
-        {id: "prospects0", label: "Prospects Zero", type: "number"},
-        {id: "prospects1", label: "Prospect One", type: "number"},
-        {id: "education", label: "Education", type: "number"}
+        {id: "wages", label: "Wages", type: "number"},
+        {id: "prospects", label: "Prospects", type: "number"},
+        {id: "education", label: "Education", type: "number"},
+        {id: "exnditure", label: "Expenditure", type: "number"},
     ], "rows": [
     ]};
 
