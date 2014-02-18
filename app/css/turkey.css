@@ -33,16 +33,23 @@ span.input-group-addon{
   -ms-user-select: none;
   user-select: none;
 }
-
+.blockGrid
+{
+  background: #eee;
+  height: 34px;
+  border: 1px solid #ccc;
+  
+}
 .block
 {
-  width: 7%;
-  height: 30px;
+  width: 10%;
+  height: 32px;
   margin: 0px;
-  background: white;
-  border: 1px solid black;
+  background: rgb(132,195,190);
   display: block;
   float: left;
+  line-height: 1.42857143;
+  border-right: 1px solid white;
 }
 .clear
 {

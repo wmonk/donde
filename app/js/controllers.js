@@ -299,6 +299,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       // expenditure
       chart1.data.rows[r].c[4] = {v: $scope.results[r].expenditureScore}; 
     }
+
+    $scope.message = "Start your new life in: " + $scope.results[0].regionName;
   };
 
   // TODO: Make sure we are using the regional indexes correct, LMI have conflicting values?! :(

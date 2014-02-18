@@ -51,49 +51,58 @@
   <div ng-controller="usa" class="container" id="tokens">
     <h2>Tokens</h2>
     <p>Tokens Left: {{ maxTokens - tokensUsed }}</p>
-    <h5>Wages</h5>
+    <h5>Wages ({{metrics['wages']}}/10)</h5>
     <p>Do you want to live somewhere where you get paid very well?</p>
     <div class="input-group">
       <span class="input-group-addon" ng-click="removeTokenFrom('wages')">-</span>
-      <input type="tel" min="0" max="{{ maxWages }}" ng-model="metrics.wages" ng-change="limitTokens()" class="form-control" disabled="true">
+      <div class="blockGrid" width="100%">
+        <div class="blocks" ng-repeat="i in getNumber(metrics.wages) track by $index">
+          <div class="block"></div>
+        </div>
+      </div>
       <span class="input-group-addon" ng-click="addTokenTo('wages')">+</span>
     </div>
-    <h5>Prospects</h5>
+    <h5>Prospects ({{metrics['prospects']}}/10)</h5>
     <p>What are the prospects for your job over the next few years?</p>
     <div class="input-group">
       <span class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</span>
-      <input type="tel" min="0" max="{{ maxProspects }}" ng-model="metrics['prospects']" ng-change="limitTokens()" class="form-control"  disabled="true">
+      <div class="blockGrid" width="100%">
+        <div class="blocks" ng-repeat="i in getNumber(metrics.prospects) track by $index">
+          <div class="block"></div>
+        </div>
+      </div>
       <span class="input-group-addon" ng-click="addTokenTo('prospects')">+</span>
     </div>
-    <h5>Education</h5>
+    <h5>Education ({{metrics['education']}}/10)</h5>
     <p>What level of education do you expect for you and your family?</p>
     <div class="input-group">
       <span class="input-group-addon" ng-click="removeTokenFrom('education')">-</span>
-      <input type="tel" min="0" max="{{ maxEducation }}" ng-model="metrics['education']" ng-change="limitTokens()" class="form-control"  disabled="true">
+      <div class="blockGrid" width="100%">
+        <div class="blocks" ng-repeat="i in getNumber(metrics.education) track by $index">
+          <div class="block"></div>
+        </div>
+      </div>
       <span class="input-group-addon" ng-click="addTokenTo('education')">+</span>
     </div>
-    <h5>Expenditure</h5>
+    <h5>Expenditure ({{metrics['expenditure']}}/10)</h5>
     <p>What level of expenditure can you afford to live it? More tokens means cheaper living!</p>
     <div class="input-group">
       <span class="input-group-addon" ng-click="removeTokenFrom('expenditure')">-</span>
-      <input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true">
+      <!--<input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true" hidden="true"> -->
+      <div class="blockGrid" width="100%">
+        <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
+          <div class="block"></div>
+        </div>
+      </div>  
       <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
     </div>
-    <div id="expenditureGrid" width="100%">
-      <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
-        <div class="block">{{$index}}</div>
-      </div>
-    </div>
+    
   </div>
   
   <div ng-controller="calculateDeets">
     <button ng-click="getWages()">Get Wages</button>
   <hr/>
-
-  <pre>{{expenditure}}</pre>
-  <hr/>
   <button ng-click="getLifePlan()">Calculate LIFE PLAN</button>
-  <pre>{{results}}</pre>
   <h1>{{message}}</h1>
   <BR/>
   <div>
