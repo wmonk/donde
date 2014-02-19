@@ -59,6 +59,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.wages) track by $index">
           <div class="block"></div>
         </div>
+        <div class="clear"></div>
       </div>
       <span class="input-group-addon" ng-click="addTokenTo('wages')">+</span>
     </div>
@@ -70,6 +71,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.prospects) track by $index">
           <div class="block"></div>
         </div>
+        <div class="clear"></div>
       </div>
       <span class="input-group-addon" ng-click="addTokenTo('prospects')">+</span>
     </div>
@@ -81,6 +83,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.education) track by $index">
           <div class="block"></div>
         </div>
+        <div class="clear"></div>
       </div>
       <span class="input-group-addon" ng-click="addTokenTo('education')">+</span>
     </div>
@@ -93,6 +96,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
           <div class="block"></div>
         </div>
+        <div class="clear"></div>
       </div>  
       <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
     </div>
@@ -105,6 +109,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.age) track by $index">
           <div class="block"></div>
         </div>
+        <div class="clear"></div>
       </div>  
       <span class="input-group-addon" ng-click="addTokenTo('age')">+</span>
     </div>
@@ -116,14 +121,16 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.density) track by $index">
           <div class="block"></div>
         </div>
+        <div class="clear"></div>
       </div>  
       <span class="input-group-addon" ng-click="addTokenTo('density')">+</span>
     </div>
   </div>
-
+  <div class="clear"></div>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
   <div ng-controller="calculateDeets">
-    <pre>Expenditure<br/>
-      {{expenditure}}
+    <pre>wages<br/>
+      {{wages}}
     </pre>
     <pre>pop dens<br/>
       {{populationDensity}}

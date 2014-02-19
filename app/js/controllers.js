@@ -161,7 +161,9 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender).success(function(data)
     {
       var totalWages = 0;
-      $scope.wages[i][0] = data.series[0].estpay;
+      $scope.wages[i][0] = {"wage": 0, "score": 0};
+      $scope.wages[i][0].wage = data.series[0].estpay;
+      $scope.wages[i][0].score = data.series[0].estpay;
       totalWages += data.series[0].estpay;
 
       //now get the rest of the regions
@@ -169,7 +171,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       .success(function(data)
       {
         angular.forEach(data.series[0].breakdown, function(row, index){
-          $scope.wages[i][$scope.regionAsheIndexToOurIndex(row.region)] = row.estpay;
+          $scope.wages[i][$scope.regionAsheIndexToOurIndex(row.region)] = {"wage":row.estpay, "score": row.estpay};
           totalWages += row.estpay;
         });
 
@@ -177,8 +179,13 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
         {
           if ($scope.wages[i][r] != null)
           {
-            $scope.wages[i][r] = $scope.wages[i][r]/totalWages;
-            $scope.wages[i][r] = parseFloat($scope.wages[i][r].toFixed(4));
+            $scope.wages[i][r].score = parseFloat(($scope.wages[i][r].wage/totalWages).toFixed(4));
+          }
+          else
+          {
+            // why has this happened
+            console.log("no wages data for index " + r);
+            //$scope.wages[i][r] = {"wage" : 0, "score":0};
           }
         }
       })
@@ -276,10 +283,10 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       $scope.results[index].regionName = $scope.regionIndexToRegionName(index);
       
       //wages
-      $scope.results[index].wages0Value = $scope.wages[0][index];
-      $scope.results[index].wages0Score = $scope.wages[0][index] * $scope.metrics.wages;
-      $scope.results[index].wages1Value = $scope.wages[1][index];
-      $scope.results[index].wages1Score = $scope.wages[1][index] * $scope.metrics.wages; 
+      $scope.results[index].wages0Value = $scope.wages[0][index].wage;
+      $scope.results[index].wages0Score = $scope.wages[0][index].score * $scope.metrics.wages;
+      $scope.results[index].wages1Value = $scope.wages[1][index].wage;
+      $scope.results[index].wages1Score = $scope.wages[1][index].score * $scope.metrics.wages; 
       // proscpects
       $scope.results[index].prospects0Value = $scope.prospects[0][index];
       $scope.results[index].prospects0Score = $scope.prospects[0][index] * $scope.metrics.prospects;
@@ -326,7 +333,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       chart1.data.rows[r] = {c:[{}]}; 
       chart1.data.rows[r].c[0] = {v: $scope.results[r].regionName};
       // wages
-      chart1.data.rows[r].c[1] = {v: ($scope.results[r].wages0Score + $scope.results[r].wages1Score)};
+      var msg = "P1: £" + $scope.results[r].wages0Value + " P2: £" + $scope.results[r].wages1Value;
+      chart1.data.rows[r].c[1] = {v: ($scope.results[r].wages0Score + $scope.results[r].wages1Score), f: msg };
       // prospects
       chart1.data.rows[r].c[2] = {v: ($scope.results[r].prospects0Score + $scope.results[r].prospects1Score)};
       // eduation
@@ -384,18 +392,18 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
   {
     switch(index)
     {
-      case 0: return 0; // London
-      case 9: return 1; // south east
+      case 1: return 0; // London
+      case 8: return 1; // south east
       case 7: return 2; // Eastern
-      case 10: return 3; // South West
+      case 9: return 3; // South West
       case 6: return 4; // West Midlands
       case 5: return 5; // East Midlands
       case 4: return 6; // Yorkshire & The Humbder
-      case 2: return 7; // North West
-      case 1: return 8; // North East
-      case 11: return 9; // Wales
-      case 12: return 10; // Scotland
-      case 13: return 11; // Northern Ireland
+      case 3: return 7; // North West
+      case 2: return 8; // North East
+      case 10: return 9; // Wales
+      case 11: return 10; // Scotland
+      case 12: return 11; // Northern Ireland
     };
   };
 
