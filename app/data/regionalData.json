@@ -1,0 +1,15 @@
+[
+	{"region": 9, "averageAge": 41.7, "populationDensity" : 148},
+	{"region": 10, "averageAge": 41.5, "populationDensity" : 68},
+	{"region": 11, "averageAge": 37.6, "populationDensity" : 134},
+	{"region": 8, "averageAge": 41.5, "populationDensity" : 304},
+	{"region": 7, "averageAge": 40.2, "populationDensity" : 502},
+	{"region": 6, "averageAge": 39.8, "populationDensity" : 345},
+	{"region": 5, "averageAge": 41, "populationDensity" : 293},
+	{"region": 4, "averageAge": 39.7, "populationDensity" : 434},
+	{"region": 2, "averageAge": 41, "populationDensity" : 309},
+	{"region": 0, "averageAge": 34, "populationDensity" : 5285},
+	{"region": 1, "averageAge": 40.8, "populationDensity" : 458},
+	{"region": 3, "averageAge": 42.9, "populationDensity" : 224},
+
+]

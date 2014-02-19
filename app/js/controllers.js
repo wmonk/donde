@@ -88,21 +88,15 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
 
   $scope.maxTokens = 15;
   $scope.tokensUsed = 0;
-  $scope.maxWages = 15;
-  $scope.maxProspects = 15;
-  $scope.maxEducation = 15;
-  $scope.maxExpenditure = 15;
 
   $scope.addTokenTo = function(what){
-    $scope.limitTokens();
-    if ($scope.metrics[what] >= 15 || $scope.tokensUsed === 15) {
+    if ($scope.metrics[what] >=10 || $scope.tokensUsed === 15) {
       return;
     }
-    $scope.metrics[what]++;
-    
-    if(what == "expenditure")
+    else
     {
-
+      $scope.metrics[what]++;
+      $scope.limitTokens();
     }
   }
   $scope.removeTokenFrom = function(what){
@@ -114,10 +108,6 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
   }
   $scope.limitTokens = function(){
     $scope.tokensUsed = parseInt($scope.metrics.wages, 10) + parseInt($scope.metrics.prospects, 10) + parseInt($scope.metrics.education, 10) + parseInt($scope.metrics.expenditure, 10);
-    $scope.maxWages = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.wages, 10);
-    $scope.maxProspects = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.prospects, 10);
-    $scope.maxEducation = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.education, 10);
-    $scope.maxExpenditure = (parseInt($scope.maxTokens, 10) - parseInt($scope.tokensUsed, 10)) + parseInt($scope.metrics.expenditure, 10);
   };
 
   $scope.getNumber = function(num) {
