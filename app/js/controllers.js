@@ -335,11 +335,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
                                         +$scope.results[index].ageScore
                                         +$scope.results[index].densityScore;
     }
-
-    $scope.results = $filter('orderBy')($scope.results, '-totalScore');
     // result 0 is the best region based on score!
-
-    console.log($scope.results);
+    $scope.results = $filter('orderBy')($scope.results, '-totalScore');
 
     // calculate the 'average' region
     $scope.averages = {"wages0":0,"wages1":0, "prospects0":0,"prospects1":0, "education":0,"expenditure":0,"age":0,"density":0};
@@ -354,6 +351,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       $scope.averages.age += $scope.results[r].ageValue;
       $scope.averages.density += $scope.results[r].densityValue;
     }
+    
     for(var propertyName in $scope.averages)
     {
       $scope.averages[propertyName] = ($scope.averages[propertyName]/$scope.numberOfRegions).toFixed(4);
@@ -387,8 +385,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     }
   
     $scope.message = "Start your new life in: " + $scope.results[0].regionName;
-    
-  if($scope.metrics.wages > 0)
+      
+    if($scope.metrics.wages > 0)
     {
       var wages0 = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
       var wages1 = (($scope.results[0].wages1Value / $scope.averages.wages1)*100).toFixed(0)-100;
