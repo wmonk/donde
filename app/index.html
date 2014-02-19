@@ -96,10 +96,38 @@
       </div>  
       <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
     </div>
-    
+    <h5>Age of Population ({{metrics['age']}}/10)</h5>
+    <p>Fancy living somewhere that has a younger average age? The more tokens the younger the population.</p>
+    <div class="input-group">
+      <span class="input-group-addon" ng-click="removeTokenFrom('age')">-</span>
+      <!--<input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true" hidden="true"> -->
+      <div class="blockGrid" width="100%">
+        <div class="blocks" ng-repeat="i in getNumber(metrics.age) track by $index">
+          <div class="block"></div>
+        </div>
+      </div>  
+      <span class="input-group-addon" ng-click="addTokenTo('age')">+</span>
+    </div>
+    <h5>Population Density ({{metrics['density']}}/10)</h5>
+    <p>Tired of having no friends to play with? More tokens means more people :)</p>
+    <div class="input-group">
+      <span class="input-group-addon" ng-click="removeTokenFrom('density')">-</span>
+      <div class="blockGrid" width="100%">
+        <div class="blocks" ng-repeat="i in getNumber(metrics.density) track by $index">
+          <div class="block"></div>
+        </div>
+      </div>  
+      <span class="input-group-addon" ng-click="addTokenTo('density')">+</span>
+    </div>
   </div>
-  
+
   <div ng-controller="calculateDeets">
+    <pre>Expenditure<br/>
+      {{expenditure}}
+    </pre>
+    <pre>pop dens<br/>
+      {{populationDensity}}
+    </pre>
     <button ng-click="getWages()">Get Wages</button>
   <hr/>
   <button ng-click="getLifePlan()">Calculate LIFE PLAN</button>

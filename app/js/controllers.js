@@ -44,7 +44,9 @@ projectTurkey.service('appData', function(){
       'wages': 0,
       'prospects': 0,
       'education': 0,
-      'expenditure' : 0
+      'expenditure' : 0,
+      'age' : 0,
+      'density' : 0
     };
 });
 
@@ -107,7 +109,12 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
     $scope.metrics[what]--;
   }
   $scope.limitTokens = function(){
-    $scope.tokensUsed = parseInt($scope.metrics.wages, 10) + parseInt($scope.metrics.prospects, 10) + parseInt($scope.metrics.education, 10) + parseInt($scope.metrics.expenditure, 10);
+    $scope.tokensUsed =   parseInt($scope.metrics.wages, 10)
+                        + parseInt($scope.metrics.prospects, 10)
+                        + parseInt($scope.metrics.education, 10)
+                        + parseInt($scope.metrics.expenditure, 10)
+                        + parseInt($scope.metrics.age, 10)
+                        + parseInt($scope.metrics.density, 10);
   };
 
   $scope.getNumber = function(num) {
@@ -120,20 +127,21 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
   $scope.numberOfRegions = 12;
-  $scope.wages = [
-    [null, null, null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null, null, null, null]
-  ];
-
-  $scope.prospects = [
-    [null, null, null, null, null, null, null, null, null, null, null, null],
+  $scope.wages =
+  [
+    [null, null, null, null, null, null, null, null, null, null, null,null],
     [null, null, null, null, null, null, null, null, null, null, null,null]
   ];
-
-  $scope.education =    [null, null, null, null, null, null, null, null, null, null, null,null];
-  $scope.expenditure =  [null, null, null, null, null, null, null, null, null, null, null,null]
-  $scope.results =      [null, null, null, null, null, null, null, null, null, null, null,null];
-
+  $scope.prospects =
+  [
+    [null, null, null, null, null, null, null, null, null, null, null,null],
+    [null, null, null, null, null, null, null, null, null, null, null,null]
+  ];
+  $scope.education    = [null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.density      = [null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.expenditure  = [null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.age          = [null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.results      = [null, null, null, null, null, null, null, null, null, null, null,null];
 
 
   $scope.message = "";
@@ -144,7 +152,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     $scope.getProspectsForUser(0);
     $scope.getProspectsForUser(1);
     $scope.getEducation();
-    $scope.getExpenditure();
+    $scope.getRegionalData();
   }
 
   $scope.getWagesForUser = function(i) {
@@ -225,15 +233,37 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
         console.error("Error:", data);
       });
   };
-  $scope.getExpenditure = function()
+  $scope.getRegionalData = function()
   {
     // expenditure data: http://www.ons.gov.uk/ons/rel/family-spending/family-spending/family-spending-2012-edition/art-chapter-1--overview.html#tab-Household-expenditure-by-region
-    SOC.get('data/expenditure.json')
+    SOC.get('data/regionalData.json')
     .success(function(data){
+      var totalAge = 0;
+      var totalPopulationDensity = 0;
       angular.forEach(data, function (object, key)
       {
+        // set up arrays
+        $scope.age[object.region] = {"age":null, "val": null};
+        $scope.density[object.region] = {"density": null, "val": null};
+
         $scope.expenditure[object.region] =parseFloat(((1/object.expenditure)*100).toFixed(4));
+        // age
+        $scope.age[object.region].age = object.averageAge;
+        $scope.age[object.region].val = 1/object.averageAge;
+        totalAge += 1/object.averageAge;
+        
+        // population density
+        $scope.density[object.region].density = object.populationDensity;
+        totalPopulationDensity += object.populationDensity;
       });
+
+
+      for (var r = 0; r < $scope.numberOfRegions; r++)
+      {
+        $scope.age[r].val = ($scope.age[r].val / totalAge).toFixed(4);
+        $scope.density[r].val = ($scope.density[r].density / totalPopulationDensity).toFixed(4);
+         
+      }
     });
   };
 
@@ -264,18 +294,33 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       $scope.results[index].expenditureValue = $scope.expenditure[index];
       $scope.results[index].expenditureScore = $scope.expenditure[index] * $scope.metrics.expenditure;
 
+
+      // age
+      $scope.results[index].ageValue = $scope.age[index].age;
+      $scope.results[index].ageScore = $scope.age[index].val * $scope.metrics.age;
+
+      // density
+      $scope.results[index].densityValue = $scope.density[index].density;
+      $scope.results[index].densityScore = $scope.density[index].val * $scope.metrics.density;
+
       $scope.results[index].totalScore = $scope.results[index].wages0Score
                                         +$scope.results[index].wages1Score
                                         +$scope.results[index].prospects0Score
                                         +$scope.results[index].prospects1Score
                                         +$scope.results[index].educationScore
-                                        +$scope.results[index].expenditureScore;
+                                        +$scope.results[index].expenditureScore
+                                        +$scope.results[index].ageScore
+                                        +$scope.results[index].densityScore;
+    
+
+
+
     }
     
 
     $scope.results = $filter('orderBy')($scope.results, '-totalScore'); 
     console.log($scope.results);
-    var resultsInGraph = 5;
+    var resultsInGraph = 12;
     for (var r = 0; r < resultsInGraph; r++)
     {
       chart1.data.rows[r] = {c:[{}]}; 
@@ -288,6 +333,11 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       chart1.data.rows[r].c[3] = {v: $scope.results[r].educationScore};
       // expenditure
       chart1.data.rows[r].c[4] = {v: $scope.results[r].expenditureScore}; 
+      // age
+      chart1.data.rows[r].c[5] = {v: $scope.results[r].ageScore}; 
+      // density
+      chart1.data.rows[r].c[6] = {v: $scope.results[r].densityScore}; 
+      
     }
 
     $scope.message = "Start your new life in: " + $scope.results[0].regionName;
@@ -364,6 +414,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
         {id: "prospects", label: "Prospects", type: "number"},
         {id: "education", label: "Education", type: "number"},
         {id: "expenditure", label: "Expenditure", type: "number"},
+        {id: "age", label: "Population Age", type: "number"},
+        {id: "density", label: "Density", type: "number"},
     ], "rows": [
     ]};
 

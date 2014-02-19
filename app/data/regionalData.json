@@ -1,15 +1,14 @@
 [
-	{"region": 9, "averageAge": 41.7, "populationDensity" : 148},
-	{"region": 10, "averageAge": 41.5, "populationDensity" : 68},
-	{"region": 11, "averageAge": 37.6, "populationDensity" : 134},
-	{"region": 8, "averageAge": 41.5, "populationDensity" : 304},
-	{"region": 7, "averageAge": 40.2, "populationDensity" : 502},
-	{"region": 6, "averageAge": 39.8, "populationDensity" : 345},
-	{"region": 5, "averageAge": 41, "populationDensity" : 293},
-	{"region": 4, "averageAge": 39.7, "populationDensity" : 434},
-	{"region": 2, "averageAge": 41, "populationDensity" : 309},
-	{"region": 0, "averageAge": 34, "populationDensity" : 5285},
-	{"region": 1, "averageAge": 40.8, "populationDensity" : 458},
-	{"region": 3, "averageAge": 42.9, "populationDensity" : 224},
-
+	{"region": 9, "averageAge": 41.7, "populationDensity" : 148, 	"expenditure": 398.20},
+	{"region": 10, "averageAge": 41.5, "populationDensity" : 68, 	"expenditure": 440.60},
+	{"region": 11, "averageAge": 37.6, "populationDensity" : 134, 	"expenditure": 489.40},
+	{"region": 8, "averageAge": 41.5, "populationDensity" : 304, 	"expenditure": 384.20},
+	{"region": 7, "averageAge": 40.2, "populationDensity" : 502, 	"expenditure": 444.00},
+	{"region": 6, "averageAge": 39.8, "populationDensity" : 345, 	"expenditure": 410.10},
+	{"region": 5, "averageAge": 41, "populationDensity" : 293, 		"expenditure": 446.90},
+	{"region": 4, "averageAge": 39.7, "populationDensity" : 434, 	"expenditure": 424.60},
+	{"region": 2, "averageAge": 41, "populationDensity" : 309,  	"expenditure": 497.10},
+	{"region": 0, "averageAge": 34, "populationDensity" : 5285, 	"expenditure": 574.90},
+	{"region": 1, "averageAge": 40.8, "populationDensity" : 458, 	"expenditure": 539.30},
+	{"region": 3, "averageAge": 42.9, "populationDensity" : 224,  	"expenditure": 479.90}
 ]
