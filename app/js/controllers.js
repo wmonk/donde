@@ -209,10 +209,6 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
         for (var r = 0; r < $scope.numberOfRegions; r++)
         {
-<<<<<<< HEAD
-          $scope.prospects[index][r].score = parseFloat(($scope.prospects[index][r].score/(totalProspects*2)).toFixed(4));
-        }
-=======
           if ($scope.prospects[index][r] != null) {
             $scope.prospects[index][r].score = parseFloat(($scope.prospects[index][r].score/(totalProspects*2)).toFixed(4));
           }else{
@@ -221,7 +217,6 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
         }
 
         return true;
->>>>>>> dev
       })
       .error(function(data){
         console.error("Error:", data);
@@ -305,28 +300,17 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       $scope.results[index].regionName = $scope.regionIndexToRegionName(index);
 
       //wages
-<<<<<<< HEAD
-      $scope.results[index].wages0Value = $scope.wages[0][index].wage;
-      $scope.results[index].wages0Score = $scope.wages[0][index].score * $scope.metrics.wages;
-      $scope.results[index].wages1Value = $scope.wages[1][index].wage;
-      $scope.results[index].wages1Score = $scope.wages[1][index].score * $scope.metrics.wages; 
-=======
       $scope.results[index].wages0Value = $scope.wages[0][index];
       $scope.results[index].wages0Score = $scope.wages[0][index] * $scope.metrics.wages;
       $scope.results[index].wages1Value = $scope.wages[1][index];
       $scope.results[index].wages1Score = $scope.wages[1][index] * $scope.metrics.wages;
->>>>>>> dev
       // proscpects
       $scope.results[index].prospects0Value = $scope.prospects[0][index].raw;
       $scope.results[index].prospects0Score = $scope.prospects[0][index].score * $scope.metrics.prospects;
       $scope.results[index].prospects1Value = $scope.prospects[1][index].raw;
       $scope.results[index].prospects1Score = $scope.prospects[1][index].score * $scope.metrics.prospects;
 
-<<<<<<< HEAD
-      // education      
-=======
       // education
->>>>>>> dev
       $scope.results[index].educationValue = $scope.education[index].raw;
       $scope.results[index].educationScore = $scope.education[index].score * $scope.metrics.education;
 
@@ -356,14 +340,9 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
     }
 
-<<<<<<< HEAD
-    $scope.results = $filter('orderBy')($scope.results, '-totalScore'); 
-    // result 0 is the best region based on score!
-=======
     $scope.results = $filter('orderBy')($scope.results, '-totalScore');
     // result 0 is the best region based on score!
 
->>>>>>> dev
     console.log($scope.results);
 
     // calculate the 'average' region
@@ -391,33 +370,15 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       chart1.data.rows[r] = {c:[{}]};
       chart1.data.rows[r].c[0] = {v: $scope.results[r].regionName};
       // wages
-<<<<<<< HEAD
-      var wagesMsg = "P1: £" + $scope.results[r].wages0Value + " P2: £" + $scope.results[r].wages1Value;
-      chart1.data.rows[r].c[1] = {v: ($scope.results[r].wages0Score + $scope.results[r].wages1Score), f: wagesMsg};
-=======
-
       var wagesMsg = "P1: £" + $scope.results[r].wages0Value + " P2: £" + $scope.results[r].wages1Value;
       chart1.data.rows[r].c[1] = {v: ($scope.results[r].wages0Score + $scope.results[r].wages1Score), f: wagesMsg};
 
->>>>>>> dev
       // prospects
       var prospectsMsg = "P1: " + $scope.results[r].prospects0Value.toFixed(0) + " P2: " + $scope.results[r].prospects1Value.toFixed(0);
       chart1.data.rows[r].c[2] = {v: ($scope.results[r].prospects0Score + $scope.results[r].prospects1Score), f: prospectsMsg};
       // eduation
       chart1.data.rows[r].c[3] = {v: $scope.results[r].educationScore};
       // expenditure
-<<<<<<< HEAD
-      var expenditureMsg = "£" + $scope.results[r].expenditureValue.toFixed(0) + " per week";
-      chart1.data.rows[r].c[4] = {v: $scope.results[r].expenditureScore, f: expenditureMsg}; 
-      // age
-      var ageMsg = $scope.results[r].ageValue + " years old";
-      chart1.data.rows[r].c[5] = {v: $scope.results[r].ageScore, f:ageMsg }; 
-      // density
-      var densityMsg = $scope.results[r].densityValue + " people per square km";
-      chart1.data.rows[r].c[6] = {v: $scope.results[r].densityScore, f:densityMsg}; 
-      
-=======
-
       var expenditureMsg = "£" + $scope.results[r].expenditureValue.toFixed(0) + " per week";
       chart1.data.rows[r].c[4] = {v: $scope.results[r].expenditureScore, f: expenditureMsg};
       // age
@@ -427,16 +388,10 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       var densityMsg = $scope.results[r].densityValue + " people per square km";
       chart1.data.rows[r].c[6] = {v: $scope.results[r].densityScore, f:densityMsg};
 
->>>>>>> dev
     }
     console.log(chart1.data);
 
     $scope.message = "Start your new life in: " + $scope.results[0].regionName;
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> dev
 
     var wages0 = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0);
     console.log(wages0);
