@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 
   <title>Project Turkey</title>
 
@@ -17,6 +20,19 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/ui-bootstrap-tpls-0.10.0.min.js"></script>
   <script src="js/ng-google-chart.js"></script>
+  <script>
+    $('document').ready(function(){
+        setTimeout(function(){
+    // Hide the address bar!
+    window.scrollTo(0, 1);
+  }, 0);
+      $('.scrollr .container').each(function(){
+        if($(this).height() < $(window).height()){
+          $(this).css({minHeight: $(window).height()});
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -25,125 +41,117 @@
     </div>
   </div>
 
-  <div ng-controller="dataInput" class="container">
-    <div ng-repeat="user in users">
-      <h2>{{ $index === 0 ? "You" : "Partner?" }}
-      </h2>
-      <div class="form-horizontal" ng-show="userPartner($index)">
-        <div class="form-group">
-          <label for="userOneAge" class="col-xs-2 control-label">Age:</label>
-          <div class="col-xs-10">
-            <input type="tel" class="form-control" id="userOneAge" ng-model="users[$index].age">
+  <div class="scrollr">
+
+    <div ng-controller="dataInput" class="container">
+      <div ng-repeat="user in users">
+        <h2>{{ $index === 0 ? "You" : "Partner?" }}
+        </h2>
+        <div class="form-horizontal" ng-show="userPartner($index)">
+          <div class="form-group">
+            <label for="userOneAge" class="col-xs-2 control-label">Age:</label>
+            <div class="col-xs-10">
+              <input type="tel" class="form-control" id="userOneAge" ng-model="users[$index].age">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="userOneJob" class="col-xs-2 control-label">Job:</label>
+            <div class="col-xs-10">
+              <input type="text" class="form-control" id="userOneJob" typeahead="job.jobTitle for job in getSoc($index, $viewValue)" typeahead-min-length="1" ng-model="user.jobTitle" ng-change="getSoc{{$index}}()" typeahead-on-select="setSoc($index, $item)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <a scroll-on-click href="#tokens" class="btn btn-primary btn-lg btn-block">On to tokens</a>
+    </div>
+
+    <div ng-controller="usa" class="container" id="tokens">
+      <h2>Tokens</h2>
+      <p>Tokens Left: {{ maxTokens - tokensUsed }}</p>
+      <h5>Wages ({{metrics['wages']}}/10)</h5>
+      <p>Do you want to live somewhere where you get paid very well?</p>
+      <div class="input-group">
+        <span class="input-group-addon" ng-click="removeTokenFrom('wages')">-</span>
+        <div class="blockGrid" width="100%">
+          <div class="blocks" ng-repeat="i in getNumber(metrics.wages) track by $index">
+            <div class="block"></div>
+          </div>
+        </div>
+        <span class="input-group-addon" ng-click="addTokenTo('wages')">+</span>
+      </div>
+      <h5>Prospects ({{metrics['prospects']}}/10)</h5>
+      <p>What are the prospects for your job over the next few years?</p>
+      <div class="input-group">
+        <span class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</span>
+        <div class="blockGrid" width="100%">
+          <div class="blocks" ng-repeat="i in getNumber(metrics.prospects) track by $index">
+            <div class="block"></div>
+          </div>
+        </div>
+        <span class="input-group-addon" ng-click="addTokenTo('prospects')">+</span>
+      </div>
+      <h5>Education ({{metrics['education']}}/10)</h5>
+      <p>What level of education do you expect for you and your family?</p>
+      <div class="input-group">
+        <span class="input-group-addon" ng-click="removeTokenFrom('education')">-</span>
+        <div class="blockGrid" width="100%">
+          <div class="blocks" ng-repeat="i in getNumber(metrics.education) track by $index">
+            <div class="block"></div>
+          </div>
+        </div>
+        <span class="input-group-addon" ng-click="addTokenTo('education')">+</span>
+      </div>
+      <h5>Expenditure ({{metrics['expenditure']}}/10)</h5>
+      <p>What level of expenditure can you afford to live it? More tokens means cheaper living!</p>
+      <div class="input-group">
+        <span class="input-group-addon" ng-click="removeTokenFrom('expenditure')">-</span>
+        <!--<input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true" hidden="true"> -->
+        <div class="blockGrid" width="100%">
+          <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
+            <div class="block"></div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="userOneJob" class="col-xs-2 control-label">Job:</label>
-          <div class="col-xs-10">
-            <input type="text" class="form-control" id="userOneJob" typeahead="job.jobTitle for job in getSoc($index, $viewValue)" typeahead-min-length="1" ng-model="user.jobTitle" ng-change="getSoc{{$index}}()" typeahead-on-select="setSoc($index, $item)">
+        <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
+      </div>
+      <h5>Age of Population ({{metrics['age']}}/10)</h5>
+      <p>Fancy living somewhere that has a younger average age? The more tokens the younger the population.</p>
+      <div class="input-group">
+        <span class="input-group-addon" ng-click="removeTokenFrom('age')">-</span>
+        <!--<input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true" hidden="true"> -->
+        <div class="blockGrid" width="100%">
+          <div class="blocks" ng-repeat="i in getNumber(metrics.age) track by $index">
+            <div class="block"></div>
           </div>
         </div>
+        <span class="input-group-addon" ng-click="addTokenTo('age')">+</span>
       </div>
-    </div>
-    <a href="#tokens" class="btn btn-primary">On to tokens</a>
-  </div>
+      <h5>Population Density ({{metrics['density']}}/10)</h5>
+      <p>Tired of having no friends to play with? More tokens means more people :)</p>
+      <div class="input-group">
+        <span class="input-group-addon" ng-click="removeTokenFrom('density')">-</span>
+        <div class="blockGrid" width="100%">
+          <div class="blocks" ng-repeat="i in getNumber(metrics.density) track by $index">
+            <div class="block"></div>
+          </div>
+        </div>
+        <span class="input-group-addon" ng-click="addTokenTo('density')">+</span>
+      </div>
 
-  <div ng-controller="usa" class="container" id="tokens">
-    <h2>Tokens</h2>
-    <p>Tokens Left: {{ maxTokens - tokensUsed }}</p>
-    <h5>Wages ({{metrics['wages']}}/10)</h5>
-    <p>Do you want to live somewhere where you get paid very well?</p>
-    <div class="input-group">
-      <span class="input-group-addon" ng-click="removeTokenFrom('wages')">-</span>
-      <div class="blockGrid" width="100%">
-        <div class="blocks" ng-repeat="i in getNumber(metrics.wages) track by $index">
-          <div class="block"></div>
-        </div>
-        <div class="clear"></div>
+
+    </div>
+
+    <div ng-controller="calculateDeets" class="container" id="result">
+      <a scroll-on-click href="#result" id="resulter" class="btn btn-primary btn-lg btn-block" ng-click="getWages()">On to results</a>
+
+      <a class="btn btn-primary btn-lg btn-block" ng-click="getLifePlan()">DONDEEEEEE</a>
+      <h1>{{message}}</h1>
+      <div>
+        <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
       </div>
-      <span class="input-group-addon" ng-click="addTokenTo('wages')">+</span>
     </div>
-    <h5>Prospects ({{metrics['prospects']}}/10)</h5>
-    <p>What are the prospects for your job over the next few years?</p>
-    <div class="input-group">
-      <span class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</span>
-      <div class="blockGrid" width="100%">
-        <div class="blocks" ng-repeat="i in getNumber(metrics.prospects) track by $index">
-          <div class="block"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <span class="input-group-addon" ng-click="addTokenTo('prospects')">+</span>
-    </div>
-    <h5>Education ({{metrics['education']}}/10)</h5>
-    <p>What level of education do you expect for you and your family?</p>
-    <div class="input-group">
-      <span class="input-group-addon" ng-click="removeTokenFrom('education')">-</span>
-      <div class="blockGrid" width="100%">
-        <div class="blocks" ng-repeat="i in getNumber(metrics.education) track by $index">
-          <div class="block"></div>
-        </div>
-        <div class="clear"></div>
-      </div>
-      <span class="input-group-addon" ng-click="addTokenTo('education')">+</span>
-    </div>
-    <h5>Expenditure ({{metrics['expenditure']}}/10)</h5>
-    <p>What level of expenditure can you afford to live it? More tokens means cheaper living!</p>
-    <div class="input-group">
-      <span class="input-group-addon" ng-click="removeTokenFrom('expenditure')">-</span>
-      <!--<input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true" hidden="true"> -->
-      <div class="blockGrid" width="100%">
-        <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
-          <div class="block"></div>
-        </div>
-        <div class="clear"></div>
-      </div>  
-      <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
-    </div>
-    <h5>Age of Population ({{metrics['age']}}/10)</h5>
-    <p>Fancy living somewhere that has a younger average age? The more tokens the younger the population.</p>
-    <div class="input-group">
-      <span class="input-group-addon" ng-click="removeTokenFrom('age')">-</span>
-      <!--<input type="tel" min="0" max="{{ maxEdxpenditure }}" ng-model="metrics['expenditure']" ng-change="limitTokens()" class="form-control"  disabled="true" hidden="true"> -->
-      <div class="blockGrid" width="100%">
-        <div class="blocks" ng-repeat="i in getNumber(metrics.age) track by $index">
-          <div class="block"></div>
-        </div>
-        <div class="clear"></div>
-      </div>  
-      <span class="input-group-addon" ng-click="addTokenTo('age')">+</span>
-    </div>
-    <h5>Population Density ({{metrics['density']}}/10)</h5>
-    <p>Tired of having no friends to play with? More tokens means more people :)</p>
-    <div class="input-group">
-      <span class="input-group-addon" ng-click="removeTokenFrom('density')">-</span>
-      <div class="blockGrid" width="100%">
-        <div class="blocks" ng-repeat="i in getNumber(metrics.density) track by $index">
-          <div class="block"></div>
-        </div>
-        <div class="clear"></div>
-      </div>  
-      <span class="input-group-addon" ng-click="addTokenTo('density')">+</span>
-    </div>
-  </div>
-  <div class="clear"></div>
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-  <div ng-controller="calculateDeets">
-    <pre>wages<br/>
-      {{wages}}
-    </pre>
-    <pre>pop dens<br/>
-      {{populationDensity}}
-    </pre>
-    <button ng-click="getWages()">Get Wages</button>
-    <hr/>
-    <button ng-click="getLifePlan()">Calculate LIFE PLAN</button>
-    <h1>{{message}}</h1>
-    <BR/>
-    <div>
-      <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
-    </div>
-    <pre>{{averages}}</pre>
+
   </div>
   </body>
 </html>
