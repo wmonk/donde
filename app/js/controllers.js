@@ -295,22 +295,22 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
   {
     for(var index = 0; index < $scope.numberOfRegions; index++)
     {
-      $scope.results[index] = {};
+     $scope.results[index] = {};
       $scope.results[index].regionIndex = index;
       $scope.results[index].regionName = $scope.regionIndexToRegionName(index);
-
+      
       //wages
-      $scope.results[index].wages0Value = $scope.wages[0][index];
-      $scope.results[index].wages0Score = $scope.wages[0][index] * $scope.metrics.wages;
-      $scope.results[index].wages1Value = $scope.wages[1][index];
-      $scope.results[index].wages1Score = $scope.wages[1][index] * $scope.metrics.wages;
-      // proscpects
+      $scope.results[index].wages0Value = $scope.wages[0][index].wage;
+      $scope.results[index].wages0Score = $scope.wages[0][index].score * $scope.metrics.wages;
+      $scope.results[index].wages1Value = $scope.wages[1][index].wage;
+      $scope.results[index].wages1Score = $scope.wages[1][index].score * $scope.metrics.wages; 
+      // prospects
       $scope.results[index].prospects0Value = $scope.prospects[0][index].raw;
       $scope.results[index].prospects0Score = $scope.prospects[0][index].score * $scope.metrics.prospects;
       $scope.results[index].prospects1Value = $scope.prospects[1][index].raw;
       $scope.results[index].prospects1Score = $scope.prospects[1][index].score * $scope.metrics.prospects;
 
-      // education
+      // education      
       $scope.results[index].educationValue = $scope.education[index].raw;
       $scope.results[index].educationScore = $scope.education[index].score * $scope.metrics.education;
 
@@ -334,10 +334,6 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
                                         +$scope.results[index].expenditureScore
                                         +$scope.results[index].ageScore
                                         +$scope.results[index].densityScore;
-
-
-
-
     }
 
     $scope.results = $filter('orderBy')($scope.results, '-totalScore');
@@ -389,12 +385,33 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       chart1.data.rows[r].c[6] = {v: $scope.results[r].densityScore, f:densityMsg};
 
     }
-    console.log(chart1.data);
-
+  
     $scope.message = "Start your new life in: " + $scope.results[0].regionName;
+    
+  if($scope.metrics.wages > 0)
+    {
+      var wages0 = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
+      var wages1 = (($scope.results[0].wages1Value / $scope.averages.wages1)*100).toFixed(0)-100;
 
-    var wages0 = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0);
-    console.log(wages0);
+    }
+    if($scope.metrics.prospects > 0)
+    {
+      var prospects0 = (($scope.results[0].prospects0Value / $scope.averages.prospects0)*100).toFixed(0)-100;
+      var prospects1 = (($scope.results[0].prospects1Value / $scope.averages.prospects1)*100).toFixed(0)-100;
+    }
+    if($scope.metrics.education > 0)
+    {
+      var education =  (($scope.results[0].educationValue / $scope.averages.education)*100).toFixed(0)-100;
+    }
+    if($scope.metrics.age > 0)
+    {
+      var age = (($scope.results[0].ageValue / $scope.averages.age)*100).toFixed(0)-100;
+    }
+    if($scope.metrics.density > 0)
+    {
+      var density = (($scope.results[0].densityValue / $scope.averages.density)*100).toFixed(0)-100;
+    }
+
   };
 
   // TODO: Make sure we are using the regional indexes correct, LMI have conflicting values?! :(
@@ -476,7 +493,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
     chart1.options = {
         "title": "Region Score Breakdown",
-        "colors" : ['#000','#111','#222','#333','#444','#555'],
+        "colors" : ['#9E3F00','#0CCABA','#E3F5B7','#e6Ae00','#D46700','#BFBAB7'],
         "isStacked": "true",
         "legend" : "bottom",
         "fill": 20,
