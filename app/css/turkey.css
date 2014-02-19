@@ -5,9 +5,13 @@ html, body{
 }
 body{
   width: 100%;
-  margin-top: 45px;
   font-family: 'Roboto Slab';
   font-weight: 300;
+  padding: 0px 30px;
+}
+.scrollr{
+  height: 100%;
+  overflow: hidden;
 }
 .navbar-brand{
   width: 100%;
@@ -22,34 +26,11 @@ h2{
   text-transform: uppercase;
   text-align: center;
 }
-.container{
-  height: 100%;@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300);
-
-html, body{
-  height: 100%;
+.scrollr .container{
+  padding: 40px 0 40px;
 }
-body{
-  width: 100%;
-  margin-top: 45px;
-  font-family: 'Roboto Slab';
-  font-weight: 300;
-  position: fixed;
-}
-.navbar-brand{
-  width: 100%;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: .3em;
-  font-weight: 300;
-  font-size: 1.2em;
-}
-h2{
-  font-size: 1em;
-  text-transform: uppercase;
-  text-align: center;
-}
-.container{
-  height: 100%;
+.input-group{
+  margin-bottom: 30px;
 }
 span.input-group-addon{
   -webkit-touch-callout: none;

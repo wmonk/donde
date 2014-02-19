@@ -20,7 +20,7 @@ projectTurkey.service('appData', function(){
       'gender': 1
     },
     {
-      'age': 0,
+      'age': null,
       'jobTitle' : '',
       'jobCode': 0,
       'gender': 1
@@ -122,7 +122,7 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
 }
 }]);
 
-projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData', function($scope, $filter, SOC, appData){
+projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData', '$q', function($scope, $filter, SOC, appData, $q){
 
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
@@ -153,11 +153,11 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     $scope.getProspectsForUser(1);
     $scope.getEducation();
     $scope.getRegionalData();
-  }
+  };
 
   $scope.getWagesForUser = function(i) {
-
     // call without region to get LONDON data
+
     SOC.get('http://api.lmiforall.org.uk/api/v1/ashe/estimatePay?soc=' + $scope.users[i].jobCode + '&age='+$scope.users[i].age+'coarse=false&filter=gender:' + $scope.users[i].gender).success(function(data)
     {
       var totalWages = 0;
@@ -181,6 +181,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
             $scope.wages[i][r] = parseFloat($scope.wages[i][r].toFixed(4));
           }
         }
+
       })
       .error(function(data){
         console.error("Error:", data);
@@ -203,6 +204,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
           $scope.prospects[index][r] = parseFloat($scope.prospects[index][r].toFixed(4));
         }
 
+        return true;
       })
       .error(function(data){
         console.error("Error:", data);
@@ -228,6 +230,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
           $scope.education[i] = $scope.education[i] / totalEducation;
           $scope.education[i] = parseFloat($scope.education[i].toFixed(4));
         }
+
+        return true;
       })
       .error(function(data){
         console.error("Error:", data);
@@ -323,6 +327,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     var resultsInGraph = 12;
     for (var r = 0; r < resultsInGraph; r++)
     {
+      console.log($scope.results[r].regionName);
       chart1.data.rows[r] = {c:[{}]};
       chart1.data.rows[r].c[0] = {v: $scope.results[r].regionName};
       // wages
@@ -339,6 +344,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       chart1.data.rows[r].c[6] = {v: $scope.results[r].densityScore};
 
     }
+    console.log(chart1.data);
 
     $scope.message = "Start your new life in: " + $scope.results[0].regionName;
   };
@@ -447,16 +453,18 @@ projectTurkey.directive('scrollOnClick', function() {
       var idToScroll = attrs.href;
       $elm.on('click', function(e) {
         e.preventDefault();
-        var $target;
+        var $target,
+            i = $(this).parent('.container').index() + 1;
+        console.log(i)
         if (idToScroll === "#tokens") {
-          $('body').css({height: $('#tokens').height(), position: 'relative'});
+          $('.scrollr').css({height: $('#tokens').outerHeight(), position: 'relative'});
         }
         if (idToScroll) {
           $target = $(idToScroll);
         } else {
           $target = $elm;
         }
-        $("body").animate({marginTop: -$target.offset().top + 100}, "slow");
+        $(".scrollr .container:first").animate({marginTop: -$(window).height() * i}, "slow");
       });
     }
   }
