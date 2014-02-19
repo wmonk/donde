@@ -27,7 +27,16 @@ h2{
   text-align: center;
 }
 .scrollr .container{
+  position: relative;
   padding: 40px 0 40px;
+}
+.scrollr #tokens{
+  padding-bottom: 100px;
+}
+#resulter{
+  position: absolute;
+  top: -100px;
+  left: 0;
 }
 .input-group{
   margin-bottom: 30px;

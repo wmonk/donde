@@ -20,7 +20,6 @@ projectTurkey.service('appData', function(){
       'gender': 1
     },
     {
-      'age': null,
       'age': 21,
       'jobTitle' : '',
       'jobCode': 5431,
@@ -203,7 +202,11 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
         for (var r = 0; r < $scope.numberOfRegions; r++)
         {
-          $scope.prospects[index][r].score = parseFloat(($scope.prospects[index][r].score/(totalProspects*2)).toFixed(4));
+          if ($scope.prospects[index][r] != null) {
+            $scope.prospects[index][r].score = parseFloat(($scope.prospects[index][r].score/(totalProspects*2)).toFixed(4));
+          }else{
+            $scope.prospects[index][r] = {"raw": 0, "score": 0};
+          }
         }
 
         return true;
@@ -498,16 +501,24 @@ projectTurkey.directive('scrollOnClick', function() {
         e.preventDefault();
         var $target,
             i = $(this).parent('.container').index() + 1;
-        console.log(i)
+        console.log(idToScroll);
         if (idToScroll === "#tokens") {
+          console.log('#tokens')
           $('.scrollr').css({height: $('#tokens').outerHeight(), position: 'relative'});
+        }else if(idToScroll === "#result"){
+          console.log($('#result').outerHeight());
+          $('.scrollr').css({height: $('#result').outerHeight(), position: 'relative'});
         }
+        var h=0;
+        $('.container').each(function(){
+          h += $(this).outerHeight();
+        })
         if (idToScroll) {
           $target = $(idToScroll);
         } else {
           $target = $elm;
         }
-        $(".scrollr .container:first").animate({marginTop: -$(window).height() * i}, "slow");
+        $(".scrollr .container:first").animate({marginTop: -$(window).height() * i + 50}, "slow");
       });
     }
   }
