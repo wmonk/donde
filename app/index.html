@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <a href="#tokens" class="btn btn-primary">On to tokens</a>
+    <a scroll-on-click href="#tokens" class="btn btn-primary">On to tokens</a>
   </div>
 
   <div ng-controller="usa" class="container" id="tokens">
@@ -93,7 +93,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.expenditure) track by $index">
           <div class="block"></div>
         </div>
-      </div>  
+      </div>
       <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
     </div>
     <h5>Age of Population ({{metrics['age']}}/10)</h5>
@@ -105,7 +105,7 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.age) track by $index">
           <div class="block"></div>
         </div>
-      </div>  
+      </div>
       <span class="input-group-addon" ng-click="addTokenTo('age')">+</span>
     </div>
     <h5>Population Density ({{metrics['density']}}/10)</h5>
@@ -116,12 +116,12 @@
         <div class="blocks" ng-repeat="i in getNumber(metrics.density) track by $index">
           <div class="block"></div>
         </div>
-      </div>  
+      </div>
       <span class="input-group-addon" ng-click="addTokenTo('density')">+</span>
     </div>
   </div>
 
-  <div ng-controller="calculateDeets">
+  <div ng-controller="calculateDeets" class="container">
     <pre>Expenditure<br/>
       {{expenditure}}
     </pre>
