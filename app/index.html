@@ -151,5 +151,24 @@
 
   </div>
 
+  <div class="clear"></div>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <div ng-controller="calculateDeets">
+    <pre>wages<br/>
+      {{wages}}
+    </pre>
+    <pre>pop dens<br/>
+      {{populationDensity}}
+    </pre>
+    <button ng-click="getWages()">Get Wages</button>
+    <hr/>
+    <button ng-click="getLifePlan()">Calculate LIFE PLAN</button>
+    <h1>{{message}}</h1>
+    <BR/>
+    <div>
+      <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+    </div>
+    <pre>{{averages}}</pre>
+  </div>
   </body>
 </html>
