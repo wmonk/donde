@@ -142,14 +142,13 @@
 
     </div>
 
-    <div ng-controller="calculateDeets" class="container" id="result">
-      <a scroll-on-click href="#result" id="resulter" class="btn btn-primary btn-lg btn-block" ng-click="getWages()">On to results</a>
+    <div ng-controller="calculateDeets" class="container nomargin" id="result">
+      <a scroll-on-click href="#result" id="resulter" class="btn btn-primary btn-lg btn-block" ng-click="getWages()">Submit my tokens</a>
 
       <a class="btn btn-primary btn-lg btn-block" ng-click="getLifePlan()">DONDEEEEEE</a>
       <h1>{{message}}</h1>
-      <div>
-        <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
-      </div>
+
+      <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
     </div>
 
   </div>

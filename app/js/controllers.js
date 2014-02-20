@@ -298,19 +298,19 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
      $scope.results[index] = {};
       $scope.results[index].regionIndex = index;
       $scope.results[index].regionName = $scope.regionIndexToRegionName(index);
-      
+
       //wages
       $scope.results[index].wages0Value = $scope.wages[0][index].wage;
       $scope.results[index].wages0Score = $scope.wages[0][index].score * $scope.metrics.wages;
       $scope.results[index].wages1Value = $scope.wages[1][index].wage;
-      $scope.results[index].wages1Score = $scope.wages[1][index].score * $scope.metrics.wages; 
+      $scope.results[index].wages1Score = $scope.wages[1][index].score * $scope.metrics.wages;
       // prospects
       $scope.results[index].prospects0Value = $scope.prospects[0][index].raw;
       $scope.results[index].prospects0Score = $scope.prospects[0][index].score * $scope.metrics.prospects;
       $scope.results[index].prospects1Value = $scope.prospects[1][index].raw;
       $scope.results[index].prospects1Score = $scope.prospects[1][index].score * $scope.metrics.prospects;
 
-      // education      
+      // education
       $scope.results[index].educationValue = $scope.education[index].raw;
       $scope.results[index].educationScore = $scope.education[index].score * $scope.metrics.education;
 
@@ -351,7 +351,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       $scope.averages.age += $scope.results[r].ageValue;
       $scope.averages.density += $scope.results[r].densityValue;
     }
-    
+
     for(var propertyName in $scope.averages)
     {
       $scope.averages[propertyName] = ($scope.averages[propertyName]/$scope.numberOfRegions).toFixed(4);
@@ -383,9 +383,9 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
       chart1.data.rows[r].c[6] = {v: $scope.results[r].densityScore, f:densityMsg};
 
     }
-  
+
     $scope.message = "Start your new life in: " + $scope.results[0].regionName;
-      
+
     if($scope.metrics.wages > 0)
     {
       var wages0 = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
@@ -476,7 +476,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
      var chart1 = {};
     chart1.type = "ColumnChart";
-    chart1.cssStyle = "height:100%; width:100%;";
+    chart1.cssStyle = "height:300%; width:100%;";
     chart1.data = {"cols": [
         {id: "region", label: "Region", type: "string"},
         {id: "wages", label: "Wages", type: "number"},
@@ -493,14 +493,19 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
         "title": "Region Score Breakdown",
         "colors" : ['#9E3F00','#0CCABA','#E3F5B7','#e6Ae00','#D46700','#BFBAB7'],
         "isStacked": "true",
-        "legend" : "bottom",
+        "legend" : "none",
+        "horizontal": true,
         "fill": 20,
-        "displayExactValues": true,
+        "displayExactValues": false,
         "vAxis": {
-            "title": "Score", "gridlines": {"count": 6}
+            "title": "", "gridlines": {"count": 0}
         },
         "hAxis": {
-            "title": "Region"
+            "title": "",
+            "textStyle": {
+              "color": "#3276b1",
+              "fontName": "Roboto Slab"
+            }
         }
     };
 
@@ -520,7 +525,7 @@ projectTurkey.directive('scrollOnClick', function() {
         e.preventDefault();
         var $target,
             i = $(this).parent('.container').index() + 1;
-        console.log(idToScroll);
+
         if (idToScroll === "#tokens") {
           console.log('#tokens')
           $('.scrollr').css({height: $('#tokens').outerHeight(), position: 'relative'});
