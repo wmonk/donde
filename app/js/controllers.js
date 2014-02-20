@@ -555,8 +555,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
 
 
     chart1.options = {
-        "title": "Region Score Breakdown",
-        "colors" : ['#9E3F00','#0CCABA','#E3F5B7','#e6Ae00','#D46700','#BFBAB7'],
+        "title": "",
+        "colors" : ['#9E3F00','#4c924c','#000066','#e6Ae00','#D46700','#BFBAB7'],
         "isStacked": "true",
         "legend" : "none",
         "horizontal": true,
