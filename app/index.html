@@ -176,6 +176,7 @@
       <div class="container" id="results">
         <h1>Loading...</h1>
         <div class="loader"></div>
+        <div ng-bind-html="mapImage"></div>
         <a scroll-on-click class="btn btn-primary btn-lg btn-block" href="#life" ng-click="getLifePlan()">Show me!</a>
       </div>
 
@@ -190,8 +191,23 @@
         <h4>Population</h4>
         <div ng-bind-html="result_population"></div>
         <br/>
-        <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
-      </div>
+        <div>
+          <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+        </div>
+        <br/>
+        <div id="regionGrid">
+          <div ng-repeat="region in results track by $index">
+                <div class="row">
+                  {{region.regionName}}
+                  {{$index + 1}}
+                  {{region.totalScore}}
+                  {{region.wage0Value}}
+                  {{region.wage1Value}}
+                </div>
+
+              </div>
+        </div>
+    </div>
     </div>
 
   </div>
