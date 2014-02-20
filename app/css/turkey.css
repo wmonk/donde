@@ -17,6 +17,13 @@ body{
   font-weight: 700;
   font-size: 2em;
 }
+.btn.stick-bottom{
+  position: absolute;
+  bottom: 15px;
+  background: rgba(255,255,255,0.5);
+  width: auto;
+  padding: 10px 20px;
+}
 .btn-block:hover, .btn-block:active{
   background: #fff;
 }
@@ -98,6 +105,9 @@ h2{
 }
 .scrollr .container{
   position: relative;
+  box-sizing: border-box;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 .input-group{
   margin-bottom: 30px;

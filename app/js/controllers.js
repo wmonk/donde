@@ -82,6 +82,12 @@ projectTurkey.controller('dataInput', ['$scope', 'SOC', 'appData', '$http', func
       return false;
     }
   }
+  $scope.nullUser = function(){
+    $scope.users[0].age = null;
+    $scope.users[0].jobTitle = null;
+    $scope.users[0].jobCode = null;
+    $scope.users[0].gender = null;
+  }
 }]);
 
 projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SOC, appData){
@@ -579,7 +585,7 @@ projectTurkey.directive('scrollOnClick', function() {
           });
         }else if(i === 5){
           $("#welcome").animate({marginTop: (-$(window).height() * (i - 1)) - $('#tokens').outerHeight()}, "slow", function(){
-            $('.scrollr').css({height: $('#life').height()})
+            $('.scrollr').css({height: $('#life').outerHeight()})
           });
         }else if(i === 3){
           $("#welcome").animate({marginTop: -$(window).height() * i}, "slow", function(){
