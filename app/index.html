@@ -40,7 +40,7 @@
     <div id="welcome" class="container">
       <h1><img src="img/logo.png" alt=""></h1>
       <div class="well">
-        <em>Dondee</em> is a life changing app! You will find out the optimal place for you and your family to live, by choosing your favourite things.
+        Welcome to <b>DONDE</b>, the app that is going to help you make those real tough life decisions. With just a few details DONDE will calculate the optimal area in the country for you to live, helping you make the best decision for you and your family.
       </div>
 
       <a scroll-on-click  href="#you" class="btn btn-large btn-primary btn-block">Ready?</a>
@@ -101,7 +101,7 @@
         <p>Tokens Left: {{ maxTokens - tokensUsed }}</p>
         <div class="tokenHolder">
           <h5 class="a">Wages ({{metrics['wages']}}/10)</h5><span class="source">Source: LMI For All</span><br/>
-          <p>Do you want to live somewhere where you get paid very well?</p>
+          <p>How important are high wages? More tokens means more monies.</p>
           <div class="input-group">
             <span class="input-group-addon" ng-click="removeTokenFrom('wages')">-</span>
             <div class="blockGrid" width="100%">
@@ -112,7 +112,7 @@
             <span class="input-group-addon" ng-click="addTokenTo('wages')">+</span>
           </div>
           <h5 class="b">Prospects ({{metrics['prospects']}}/10)</h5><span class="source">Source: LMI For All</span><br/>
-          <p>What are the prospects for your job over the next few years?</p>
+          <p>Want to work in an area with high potential? Higher tokens means higher prospectives.</p>
           <div class="input-group">
             <span class="input-group-addon" ng-click="removeTokenFrom('prospects')">-</span>
             <div class="blockGrid" width="100%">
@@ -123,7 +123,7 @@
             <span class="input-group-addon" ng-click="addTokenTo('prospects')">+</span>
           </div>
           <h5 class="c">Education ({{metrics['education']}}/10)</h5><span class="source">Source: DCLG Linked Open Data</span><br/>
-          <p>What level of education do you expect for you and your family?</p>
+          <p>How well funded are the schools in the region? Increasing tokens equals increased funding.</p>
           <div class="input-group">
             <span class="input-group-addon" ng-click="removeTokenFrom('education')">-</span>
             <div class="blockGrid" width="100%">
@@ -146,7 +146,7 @@
             <span class="input-group-addon" ng-click="addTokenTo('expenditure')">+</span>
           </div>
           <h5 class="e">Age of Population ({{metrics['age']}}/10)</h5><span class="source">Source: Office for National Statistics</span><br/>
-          <p>Fancy living somewhere that has a younger average age? The more tokens the younger the population.</p>
+          <p>Want to be surrounded with people your age? Increase the tokens to decrease the average age.</p>
           <div class="input-group">
             <span class="input-group-addon" ng-click="removeTokenFrom('age')">-</span>
             <div class="blockGrid" width="100%">
@@ -157,7 +157,7 @@
             <span class="input-group-addon" ng-click="addTokenTo('age')">+</span>
           </div>
           <h5 class="f">Population Density ({{metrics['density']}}/10)</h5><span class="source">Source: Office for National Statistics</span><br/>
-          <p>Tired of having no friends to play with? More tokens means more people :)</p>
+          <p>No friends? Add some tokens to increase the population density :)</p>
           <div class="input-group">
             <span class="input-group-addon" ng-click="removeTokenFrom('density')">-</span>
             <div class="blockGrid" width="100%">

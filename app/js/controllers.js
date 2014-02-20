@@ -473,7 +473,13 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
 
     var url = 'http://api.lmiforall.org.uk/api/v1/vacancies/search?limit='+limit+'10&postcode='+ postcode+'&keywords='+keywords;
 
-    SOC.get(url).success(function(data){
+    SOC.get(url).success(function(data)
+    {
+      angular.forEach(data, function (object, key)
+      {
+        var id = object.id;
+        var title = object.title;
+      });
 
     });
   };
