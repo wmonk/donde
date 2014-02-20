@@ -119,10 +119,11 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
 
   $scope.getNumber = function(num) {
     return new Array(num);
+
 }
 }]);
 
-projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData', '$q', function($scope, $filter, SOC, appData, $q){
+projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 'appData', '$q', function($scope, $filter, $sce, SOC, appData, $q){
 
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
@@ -145,7 +146,10 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
   $scope.averages     = {};
 
-  $scope.message = "";
+  $scope.result_region = "";
+  $scope.result_employment = "";
+  $scope.result_costs = "";
+  $scope.result_population = "";
 
   $scope.getWages = function(){
     $scope.getWagesForUser(0);
@@ -155,6 +159,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
     $scope.getEducation();
     $scope.getRegionalData();
   };
+
 
   $scope.getWagesForUser = function(i) {
     // call without region to get LONDON data
@@ -384,32 +389,39 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', 'SOC', 'appData
 
     }
 
-    $scope.message = "Start your new life in: " + $scope.results[0].regionName;
 
-    if($scope.metrics.wages > 0)
-    {
-      var wages0 = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
-      var wages1 = (($scope.results[0].wages1Value / $scope.averages.wages1)*100).toFixed(0)-100;
 
-    }
-    if($scope.metrics.prospects > 0)
-    {
-      var prospects0 = (($scope.results[0].prospects0Value / $scope.averages.prospects0)*100).toFixed(0)-100;
-      var prospects1 = (($scope.results[0].prospects1Value / $scope.averages.prospects1)*100).toFixed(0)-100;
-    }
-    if($scope.metrics.education > 0)
-    {
-      var education =  (($scope.results[0].educationValue / $scope.averages.education)*100).toFixed(0)-100;
-    }
-    if($scope.metrics.age > 0)
-    {
-      var age = (($scope.results[0].ageValue / $scope.averages.age)*100).toFixed(0)-100;
-    }
-    if($scope.metrics.density > 0)
-    {
-      var density = (($scope.results[0].densityValue / $scope.averages.density)*100).toFixed(0)-100;
-    }
+    // ouput results!
+    var regionMessage = "Donde calculates that the best area for you to live is in the " + $scope.results[0].regionName + " region.";
+    $scope.result_region = $sce.trustAsHtml(regionMessage);
+    
+    // employment
+    var wages0Percent = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
+    var wages1Percent = (($scope.results[0].wages1Value / $scope.averages.wages1)*100).toFixed(0)-100;
+    var prospects0Percent = (($scope.results[0].prospects0Value / $scope.averages.prospects0)*100).toFixed(0)-100;
+    var prospects1Percent = (($scope.results[0].prospects1Value / $scope.averages.prospects1)*100).toFixed(0)-100;
+    
+    var employmentOutput = "<b>" + $scope.users[0].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages0Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions."; 
+    employmentOutput += "The prospects in this area is " + prospects0Percent + "&#37; better than other regions on average.";
 
+    employmentOutput  += "<br/>" + "<b>" + $scope.users[1].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages1Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages1Percent + "&#37; better than other regions.";
+    employmentOutput += "The prospects in this area is " + prospects1Percent + "&#37; better than other regions.";
+    $scope.result_employment = $sce.trustAsHtml(employmentOutput);
+    
+
+    // costs
+    var expenditurePercent =  (($scope.results[0].expenditureValue / $scope.averages.expenditure)*100).toFixed(0)-100;
+    var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week. This is " + expenditurePercent + "&#37; above/below the national average."; 
+    $scope.result_costs = $sce.trustAsHtml(costsMessage);
+
+
+
+    // population
+    var education =  (($scope.results[0].educationValue / $scope.averages.education)*100).toFixed(0)-100;    
+    var age = (($scope.results[0].ageValue / $scope.averages.age)*100).toFixed(0)-100;
+    var density = (($scope.results[0].densityValue / $scope.averages.density)*100).toFixed(0)-100;
+    var populationMessage = "The average age for this region is <i>" + $scope.results[0].ageValue + " years old</i> and has a population density of <i>" + $scope.results[0].densityValue + " people per square kilometer</i>.";
+    $scope.result_population = $sce.trustAsHtml(populationMessage);
   };
 
   // TODO: Make sure we are using the regional indexes correct, LMI have conflicting values?! :(
@@ -542,7 +554,7 @@ projectTurkey.directive('scrollOnClick', function() {
         } else {
           $target = $elm;
         }
-        $(".scrollr .container:first").animate({marginTop: -$(window).height() * i + 50}, "slow");
+        //$(".scrollr .container:first").animate({marginTop: -$(window).height() * i + 50}, "slow");
       });
     }
   }

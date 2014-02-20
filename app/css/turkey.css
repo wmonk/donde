@@ -11,7 +11,7 @@ body{
 }
 .scrollr{
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 .navbar-brand{
   width: 100%;
@@ -41,10 +41,7 @@ h2{
   padding-bottom: 100px;
 }
 #resulter{
-  position: absolute;
-  top: -100px;
-  left: 0;
-}
+ }
 .input-group{
   margin-bottom: 30px;
 }
@@ -56,29 +53,6 @@ span.input-group-addon{
   -ms-user-select: none;
   user-select: none;
 }
-.blockGrid
-{
-  background: #eee;
-  height: 34px;
-  border: 1px solid #ccc;
-
-}
-.block
-{
-  width: 10%;
-  height: 32px;
-  margin: 0px;
-  background: rgb(132,195,190);
-  display: block;
-  float: left;
-  line-height: 1.42857143;
-  border-right: 1px solid white;
-}
-.clear
-{
-  clear: both;
-}
-}
 span.input-group-addon{
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -87,6 +61,16 @@ span.input-group-addon{
   -ms-user-select: none;
   user-select: none;
 }
+h5
+{
+  display: inline;
+  background: none!important;
+}
+.source
+{
+  font-size: 10px;
+  float: right;
+}
 .blockGrid
 {
   background: #eee;
@@ -108,4 +92,46 @@ span.input-group-addon{
 .clear
 {
   clear: both;
+}
+.a
+{
+  background: #9E3F00;
+  color: #9E3F00;
+}
+.b
+{
+  background: #0CCABA;
+  color: #0CCABA; 
+}
+.c
+{
+  background: #e3f5b7;
+  color: #e3f5b7; 
+}
+.d
+{
+  background: #e6ae00;
+  color: #e6ae00;
+}
+.e
+{
+  background: #d46700;
+  color: #d46700;
+}
+.f
+{
+  background: #bfbab7;
+  color: #bfbab7;
+}
+.tokenHolder
+{
+  clear: both;
+}
+#resultTable tr
+{
+  border-bottom: 1px dotted #ccc;
+}
+#resultTable td
+{
+  padding: 5px 0px 15px 0px;
 }
