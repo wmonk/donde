@@ -88,6 +88,13 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
   $scope.users = appData.users;
   $scope.metrics = appData.metrics;
 
+
+}]);
+
+projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 'appData', '$q', function($scope, $filter, $sce, SOC, appData, $q){
+
+  $scope.users = appData.users;
+  $scope.metrics = appData.metrics;
   $scope.maxTokens = 15;
   $scope.tokensUsed = 0;
 
@@ -119,14 +126,9 @@ projectTurkey.controller('usa', ['$scope', 'SOC', 'appData', function($scope, SO
 
   $scope.getNumber = function(num) {
     return new Array(num);
+  };
 
-}
-}]);
 
-projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 'appData', '$q', function($scope, $filter, $sce, SOC, appData, $q){
-
-  $scope.users = appData.users;
-  $scope.metrics = appData.metrics;
   $scope.numberOfRegions = 12;
   $scope.wages =
   [
@@ -394,30 +396,30 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
     // ouput results!
     var regionMessage = "Donde calculates that the best area for you to live is in the " + $scope.results[0].regionName + " region.";
     $scope.result_region = $sce.trustAsHtml(regionMessage);
-    
+
     // employment
     var wages0Percent = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
     var wages1Percent = (($scope.results[0].wages1Value / $scope.averages.wages1)*100).toFixed(0)-100;
     var prospects0Percent = (($scope.results[0].prospects0Value / $scope.averages.prospects0)*100).toFixed(0)-100;
     var prospects1Percent = (($scope.results[0].prospects1Value / $scope.averages.prospects1)*100).toFixed(0)-100;
-    
-    var employmentOutput = "<b>" + $scope.users[0].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages0Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions."; 
+
+    var employmentOutput = "<b>" + $scope.users[0].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages0Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions.";
     employmentOutput += "The prospects in this area is " + prospects0Percent + "&#37; better than other regions on average.";
 
     employmentOutput  += "<br/>" + "<b>" + $scope.users[1].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages1Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages1Percent + "&#37; better than other regions.";
     employmentOutput += "The prospects in this area is " + prospects1Percent + "&#37; better than other regions.";
     $scope.result_employment = $sce.trustAsHtml(employmentOutput);
-    
+
 
     // costs
     var expenditurePercent =  (($scope.results[0].expenditureValue / $scope.averages.expenditure)*100).toFixed(0)-100;
-    var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week. This is " + expenditurePercent + "&#37; above/below the national average."; 
+    var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week. This is " + expenditurePercent + "&#37; above/below the national average.";
     $scope.result_costs = $sce.trustAsHtml(costsMessage);
 
 
 
     // population
-    var education =  (($scope.results[0].educationValue / $scope.averages.education)*100).toFixed(0)-100;    
+    var education =  (($scope.results[0].educationValue / $scope.averages.education)*100).toFixed(0)-100;
     var age = (($scope.results[0].ageValue / $scope.averages.age)*100).toFixed(0)-100;
     var density = (($scope.results[0].densityValue / $scope.averages.density)*100).toFixed(0)-100;
     var populationMessage = "The average age for this region is <i>" + $scope.results[0].ageValue + " years old</i> and has a population density of <i>" + $scope.results[0].densityValue + " people per square kilometer</i>.";
@@ -535,26 +537,68 @@ projectTurkey.directive('scrollOnClick', function() {
       var idToScroll = attrs.href;
       $elm.on('click', function(e) {
         e.preventDefault();
-        var $target,
-            i = $(this).parent('.container').index() + 1;
+        var $target;
+        var i;
 
-        if (idToScroll === "#tokens") {
-          console.log('#tokens')
-          $('.scrollr').css({height: $('#tokens').outerHeight(), position: 'relative'});
-        }else if(idToScroll === "#result"){
-          console.log($('#result').outerHeight());
-          $('.scrollr').css({height: $('#result').outerHeight(), position: 'relative'});
+        // i = $(this).parent('.container').index() + 1;
+        console.log(idToScroll)
+        switch(idToScroll){
+          case '#you':
+            i = 1;
+            break;
+          case '#partner':
+            i = 2;
+            break;
+          case '#tokens':
+            i = 3;
+            break;
+          case '#results':
+            i = 4;
+            break;
+          case '#life':
+            i = 5;
+            break;
         }
-        var h=0;
-        $('.container').each(function(){
-          h += $(this).outerHeight();
-        })
-        if (idToScroll) {
-          $target = $(idToScroll);
-        } else {
-          $target = $elm;
+
+        console.log(i);
+
+        if (i === 4) {
+          var b = $('body').scrollTop();
+          $("#welcome").animate({marginTop: (-$(window).height() * (i - 1)) - $('#tokens').outerHeight() + b}, "slow", function(){
+            $('#welcome').css({marginTop: (-$(window).height() * (i - 1)) - $('#tokens').outerHeight()})
+            $('body, html').scrollTop(0);
+            $('.scrollr').css("height", "100%")
+
+            setTimeout(function(){
+              $('.loader').fadeOut("fast");
+              setTimeout(function(){
+                $('#results .btn').css({opacity: 1});
+              },500)
+
+            }, 3000)
+          });
+        }else if(i === 5){
+          $("#welcome").animate({marginTop: (-$(window).height() * (i - 1)) - $('#tokens').outerHeight()}, "slow", function(){
+            $('.scrollr').css({height: $('#life').height()})
+          });
+        }else if(i === 3){
+          $("#welcome").animate({marginTop: -$(window).height() * i}, "slow", function(){
+            $('.scrollr').css({height: $('#tokens').height()})
+          });
+        }else{
+          $("#welcome").animate({marginTop: -$(window).height() * i}, "slow", function(){
+          $('.scrollr').css({height: "100%"})
+
+          });
         }
-        //$(".scrollr .container:first").animate({marginTop: -$(window).height() * i + 50}, "slow");
+
+
+        // if (idToScroll) {
+        //   $target = $(idToScroll);
+        // } else {
+        //   $target = $elm;
+        // }
+
       });
     }
   }

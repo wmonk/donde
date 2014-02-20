@@ -5,14 +5,84 @@ html, body{
 }
 body{
   width: 100%;
-  font-family: 'Roboto Slab';
+  /*font-family: 'Roboto Slab';*/
+  font-family: 'Helvetica Neue'
   font-weight: 300;
   /*padding: 0px 30px;*/
 }
+.btn-block{
+  width: 100%;
+  background: #fff;
+  border: none;
+  font-weight: 700;
+  font-size: 2em;
+}
+.btn-block:hover, .btn-block:active{
+  background: #fff;
+}
 .scrollr{
   height: 100%;
-  overflow: auto;
-}
+  /*overflow: auto;*/
+  overflow: hidden;
+  }
+  .container#welcome{
+    background: #F8CA00;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    margin: 0;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    }
+    #welcome .btn{
+      color: #F8CA00 !important;
+    }
+    .well{
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
+    h1 em{
+      font-style: normal;
+      font-weight: 100;
+    }
+  .container#you{
+    background: #E97F02;
+    color: #fff;
+    }
+    #you .btn{
+      color: #E97F02 !important;
+    }
+  .container#partner{
+    color: #fff;
+    background: #BD1550;
+    }
+    #partner .btn{
+      color: #BD1550 !important;
+    }
+  .container#tokens{
+    color: #333;
+    }
+    #tokens .btn{
+      background: #333;
+    }
+  .container#results{
+    color: #fff;
+    background: #490A3D;
+    }
+    .container#results h1{
+      text-align: center;
+    }
+    .container#results .btn{
+      color: #490A3D;
+      opacity: 0;
+      margin-top: 50px;
+      -webkit-transition: all .25s ease;
+         -moz-transition: all .25s ease;
+          -ms-transition: all .25s ease;
+           -o-transition: all .25s ease;
+              transition: all .25s ease;
+    }
 .navbar-brand{
   width: 100%;
   text-align: center;
@@ -28,20 +98,7 @@ h2{
 }
 .scrollr .container{
   position: relative;
-  padding: 40px 0 40px !important;
-  margin: 0px 30px;
 }
-.scrollr .container.nomargin{
-  padding: 40px 0px !important;
-}
-.scrollr .container.nomargin .btn{
-  margin: 0px 40px;
-}
-.scrollr #tokens{
-  padding-bottom: 100px;
-}
-#resulter{
- }
 .input-group{
   margin-bottom: 30px;
 }
@@ -101,12 +158,12 @@ h5
 .b
 {
   background: #0CCABA;
-  color: #0CCABA; 
+  color: #0CCABA;
 }
 .c
 {
   background: #e3f5b7;
-  color: #e3f5b7; 
+  color: #e3f5b7;
 }
 .d
 {
@@ -134,4 +191,94 @@ h5
 #resultTable td
 {
   padding: 5px 0px 15px 0px;
+}
+
+@-webkit-keyframes expand {
+  0% {
+    -webkit-transform: scale(0);
+  }
+
+  50% {
+    -webkit-transform: scale(1);
+  }
+
+  100% {
+    z-index: 1;
+  }
+}
+@-moz-keyframes expand {
+  0% {
+    -moz-transform: scale(0);
+  }
+
+  50% {
+    -moz-transform: scale(1);
+  }
+
+  100% {
+    z-index: 1;
+  }
+}
+@-o-keyframes expand {
+  0% {
+    -o-transform: scale(0);
+  }
+
+  50% {
+    -o-transform: scale(1);
+  }
+
+  100% {
+    z-index: 1;
+  }
+}
+@keyframes expand {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    z-index: 1;
+  }
+}
+.loader {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  margin: 40px 40px 40px -40px;
+
+  background-color: #490A3D;
+  border-radius: 50%;
+  box-shadow: 0 0 0 13.33333px #fff;
+  width: 80px;
+  height: 80px;
+
+}
+.loader:before, .loader:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  margin: -41px 0 0 -41px;
+  border-radius: 50%;
+  z-index: 2;
+  width: 82px;
+  height: 82px;
+}
+.loader:before {
+  background-color: #fff;
+  -webkit-animation: expand 1.6s linear infinite both;
+  -moz-animation: expand 1.6s linear infinite both;
+  animation: expand 1.6s linear infinite both;
+}
+.loader:after {
+  background-color: #490A3D;
+  -webkit-animation: expand 1.6s linear 0.8s infinite both;
+  -moz-animation: expand 1.6s linear 0.8s infinite both;
+  animation: expand 1.6s linear 0.8s infinite both;
 }
