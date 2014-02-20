@@ -210,6 +210,26 @@
           </div>
         </div>
       </div>
+
+      <div class="container" id="jobs">
+        <div id="regionGrid">
+          <h1>Potential Jobs</h1>
+          <p>These are some jobs available in the {{ results[0].regionName }}</p>
+          <br>
+          <h2>Jobs for {{ users[0].jobTitle }}</h2>
+          <br>
+          <div ng-repeat="job in jobs[0] | limitTo:4" class="row">
+            <strong>{{ job.title }}</strong> <br>
+            {{ job.company }}
+          </div>
+
+          <h2>Jobs for {{ users[1].jobTitle }}</h2>
+          <div ng-repeat="job in jobs[1] | limitTo:4" class="row">
+            <strong>{{ job.title }}</strong> <br>
+            {{ job.company }}
+          </div>
+        </div>
+      </div>
       <div>
         <!-- <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
         </div> -->

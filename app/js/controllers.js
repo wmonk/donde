@@ -156,6 +156,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
 
   $scope.averages     = {};
 
+  $scope.jobs = [[], []];
+
   $scope.result_region = "";
   $scope.result_employment = "";
   $scope.result_costs = "";
@@ -465,11 +467,13 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
     var age = (($scope.results[0].ageValue / $scope.averages.age)*100).toFixed(0)-100;
     var density = (($scope.results[0].densityValue / $scope.averages.density)*100).toFixed(0)-100;
     var populationMessage = "The average age for this region is <i>" + $scope.results[0].ageValue + " years old</i> and has a population density of <i>" + $scope.results[0].densityValue + " people per square kilometer</i>.";
+    $scope.getJobsForRegion(5, $scope.results[0].postcode, $scope.users[0].jobTitle, 0);
+    $scope.getJobsForRegion(5, $scope.results[0].postcode, $scope.users[1].jobTitle, 1);
     $scope.result_population = $sce.trustAsHtml(populationMessage);
   };
 
 
-  $scope.getJobsForRegion = function(limit, postcode, keywords){
+  $scope.getJobsForRegion = function(limit, postcode, keywords, user){
 
     var url = 'http://api.lmiforall.org.uk/api/v1/vacancies/search?limit='+limit+'10&postcode='+ postcode+'&keywords='+keywords;
 
@@ -479,6 +483,13 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
       {
         var id = object.id;
         var title = object.title;
+        var company = object.company;
+
+        $scope.jobs[user][key] = {"id": id, "title": title, "company": company};
+
+        // $scope.jobs[user][key].id = id;
+        // $scope.jobs[user][key].title = title;
+        // $scope.jobs[user][key].company = company;
       });
 
     });
