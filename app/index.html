@@ -181,8 +181,8 @@
       </div>
 
       <div class="container" id="life">
-        <div ng-bind-html="resultHeader"></div>
-        <h4>Region</h4>
+        <!-- <div ng-bind-html="resultHeader"></div> -->
+        <!-- <h4>Region</h4>
         <div ng-bind-html="result_region"></div>
         <h4>Employment</h4>
         <div ng-bind-html="result_employment"></div>
@@ -191,23 +191,29 @@
         <h4>Population</h4>
         <div ng-bind-html="result_population"></div>
         <br/>
-        <div>
-          <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
-        </div>
-        <br/>
+        <br/> -->
         <div id="regionGrid">
-          <div ng-repeat="region in results track by $index">
-                <div class="row">
-                  {{region.regionName}}
-                  {{$index + 1}}
-                  {{region.totalScore}}
-                  {{region.wage0Value}}
-                  {{region.wage1Value}}
-                </div>
-
-              </div>
+          <h1>You should move to {{results[0].regionName}}!</h1>
+          <p><strong>Donde</strong> has calculated the optimal area for you live, based on your spent tokens. Below are the top 4 regions. Scroll to the bottom to view sample jobs!</p>
+          <br>
+          <div ng-repeat="region in results | limitTo:4" class="row {{ $index === 0 ? 'special' : '' }}">
+            <h2>{{region.regionName}} <span>{{$index + 1}}</span></h2>
+            <div ng-if="$index === 0">
+              <div ng-bind-html="result_employment"></div>
+              <div ng-bind-html="result_costs"></div>
+              <div ng-bind-html="result_population"></div>
+            </div>
+            <small ng-if="$index != 0">
+              <strong>{{ users[0].jobTitle }}:</strong> £{{ region.wages0Value }}/week <br>
+              <strong>{{ users[1].jobTitle }}:</strong> £{{ region.wages1Value }}/week
+            </small>
+          </div>
         </div>
-    </div>
+      </div>
+      <div>
+        <!-- <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+        </div> -->
+      </div>
     </div>
 
   </div>

@@ -437,24 +437,24 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
     var prospects0Percent = (($scope.results[0].prospects0Value / $scope.averages.prospects0)*100).toFixed(0)-100;
     var prospects1Percent = (($scope.results[0].prospects1Value / $scope.averages.prospects1)*100).toFixed(0)-100;
 
-    var employmentOutput = "<b>" + $scope.users[0].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages0Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions.";
-    employmentOutput += "The prospects in this area is " + prospects0Percent + "&#37; better than other regions on average.";
+    var employmentOutput = "<strong class='specialTitle'>" + $scope.users[0].jobTitle +"</strong><p>You can earn on average <em>£" + $scope.results[r].wages0Value + " per week</em> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions.";
+    employmentOutput += "The prospects in this area is " + prospects0Percent + "&#37; better than other regions on average.</p>";
 
-    employmentOutput  += "<br/>" + "<b>" + $scope.users[1].jobTitle +"</b><br/>You can earn on average <i>£" + $scope.results[r].wages1Value + " per week</i> in "+ $scope.results[0].regionName + ", this is " + wages1Percent + "&#37; better than other regions.";
-    employmentOutput += "The prospects in this area is " + prospects1Percent + "&#37; better than other regions.";
+    employmentOutput  += "<strong>" + $scope.users[1].jobTitle +"</strong><p>You can earn on average <em>£" + $scope.results[r].wages1Value + " per week</em> in "+ $scope.results[0].regionName + ", this is " + wages1Percent + "&#37; better than other regions.";
+    employmentOutput += "The prospects in this area is " + prospects1Percent + "&#37; better than other regions.</p>";
     $scope.result_employment = $sce.trustAsHtml(employmentOutput);
 
 
     // costs
     var expenditurePercent =  (($scope.results[0].expenditureValue / $scope.averages.expenditure)*100).toFixed(0)-100;
-    var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week.";
+    var costsMessage = "<p>The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week.</p>";
     if(expenditurePercent > 0)
     {
-      costsMessage += "This is " + expenditurePercent + "&#37; better than the national average.";
+      costsMessage += "<p>This is " + expenditurePercent + "&#37; better than the national average.</p>";
     }
     else
     {
-      costsMessage += "This is " + expenditurePercent + "&#37; below  the national average.";
+      costsMessage += "<p>This is " + expenditurePercent + "&#37; below  the national average.</p>";
     }
     $scope.result_costs = $sce.trustAsHtml(costsMessage);
 

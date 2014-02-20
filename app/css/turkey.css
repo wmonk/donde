@@ -39,7 +39,7 @@ label{
 .scrollr{
   height: 100%;
   /*overflow: auto;*/
-  overflow: hidden;
+  /*overflow: hidden;*/
   }
   input{
     border: 2px solid #fff !important;
@@ -118,6 +118,30 @@ label{
            -o-transition: all .25s ease;
               transition: all .25s ease;
     }
+  .container#life{
+    background: #00679e;
+    color: #fff;
+    }
+    #life h2{
+      font-size: 1.3em;
+      text-align: left;
+      font-weight: 700;
+      list-style: .2em;
+      }
+      #life .row{
+        padding: 10px 30px 20px;
+        border-bottom: 1px solid rgba(0,0,0,0.3);
+      }
+      #life .row.special{
+        background: rgba(255,255,255,.3);
+      }
+      #life .row strong{
+        text-transform: uppercase;
+      }
+      #life h2 span{
+        float: right;
+        color: rgba(0,0,0,0.3);
+      }
 .navbar-brand{
   width: 100%;
   text-align: center;
