@@ -450,11 +450,11 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
     var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week.";
     if(expenditurePercent > 0)
     {
-      costsMessage += "This is " + expenditurePercent + "&#37; better than the national average.";  
+      costsMessage += "This is " + expenditurePercent + "&#37; better than the national average.";
     }
     else
     {
-      costsMessage += "This is " + expenditurePercent + "&#37; below  the national average.";  
+      costsMessage += "This is " + expenditurePercent + "&#37; below  the national average.";
     }
     $scope.result_costs = $sce.trustAsHtml(costsMessage);
 
@@ -472,7 +472,7 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
   $scope.getJobsForRegion = function(limit, postcode, keywords){
 
     var url = 'http://api.lmiforall.org.uk/api/v1/vacancies/search?limit='+limit+'10&postcode='+ postcode+'&keywords='+keywords;
-    
+
     SOC.get(url).success(function(data){
 
     });
@@ -634,7 +634,7 @@ projectTurkey.directive('scrollOnClick', function() {
           });
         }else if(i === 3){
           $("#welcome").animate({marginTop: -$(window).height() * i}, "slow", function(){
-            $('.scrollr').css({height: $('#tokens').height()})
+            $('.scrollr').css({height: $('#tokens').outerHeight()})
           });
         }else{
           $("#welcome").animate({marginTop: -$(window).height() * i}, "slow", function(){

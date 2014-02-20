@@ -41,6 +41,10 @@ body{
     color: #fff;
     text-align: center;
     }
+    #welcome h1 img{
+      width: 100%;
+      max-width: 500px;
+    }
     #welcome .btn{
       color: #F8CA00 !important;
     }
