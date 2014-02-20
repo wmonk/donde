@@ -623,6 +623,7 @@ projectTurkey.directive('scrollOnClick', function() {
             setTimeout(function(){
               $('.loader').fadeOut("fast");
               setTimeout(function(){
+                $('#results h1').text("Ready")
                 $('#results .btn').css({opacity: 1});
               },500)
 
