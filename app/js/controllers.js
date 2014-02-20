@@ -419,7 +419,15 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
 
     // costs
     var expenditurePercent =  (($scope.results[0].expenditureValue / $scope.averages.expenditure)*100).toFixed(0)-100;
-    var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week. This is " + expenditurePercent + "&#37; above/below the national average.";
+    var costsMessage = "The average expenditure for this region is £" + $scope.results[0].expenditureValue.toFixed(0) + " per person a week.";
+    if(expenditurePercent > 0)
+    {
+      costsMessage += "This is " + expenditurePercent + "&#37; better than the national average.";  
+    }
+    else
+    {
+      costsMessage += "This is " + expenditurePercent + "&#37; below  the national average.";  
+    }
     $scope.result_costs = $sce.trustAsHtml(costsMessage);
 
 
