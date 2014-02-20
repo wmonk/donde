@@ -180,36 +180,16 @@
       </div>
 
       <div class="container" id="life">
-        <!-- <pre>wages:<br/>{{wages}}</pre>
-        <pre>prospects:<br/>{{prospects}}</pre>
-        <pre>education:<br/>{{education}}</pre>
-        <pre>expenditure:<br/>{{expenditure}}</pre>
-        <pre>age:<br/>{{age}}</pre>
-        <pre>density:<br/>{{density}}</pre> -->
         <div ng-bind-html="resultHeader"></div>
-        <h1>{{message}}</h1>
-        <hr/>
-        <div id="resultTableSection">
-          <table id="resultTable" width="100%">
-            <tr>
-              <td width="25%" valign="top">Region</td>
-              <td valign="top"><div ng-bind-html="result_region"></div></td>
-            </tr>
-            <tr>
-              <td valign="top">Employment</td>
-              <td><div ng-bind-html="result_employment"></div></td>
-            </tr>
-            <tr>
-              <td valign="top">Costs</td>
-              <td><div ng-bind-html="result_costs"></div></td>
-            </tr>
-            <tr>
-              <td valign="top">Population</td>
-              <td><div ng-bind-html="result_population"></div></td>
-            </tr>
-          </table>
-        </div>
-        <hr/>
+        <h4>Region</h4>
+        <div ng-bind-html="result_region"></div>
+        <h4>Employment</h4>
+        <div ng-bind-html="result_employment"></div>
+        <h4>Costs</h4>
+        <div ng-bind-html="result_costs"></div>
+        <h4>Population</h4>
+        <div ng-bind-html="result_population"></div>
+        <br/>
         <div google-chart chart="chart" style="{{chart.cssStyle}}"/>
       </div>
     </div>
