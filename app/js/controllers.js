@@ -144,6 +144,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
   $scope.density      = [null, null, null, null, null, null, null, null, null, null, null,null];
   $scope.expenditure  = [null, null, null, null, null, null, null, null, null, null, null,null];
   $scope.age          = [null, null, null, null, null, null, null, null, null, null, null,null];
+  $scope.postcode     = [null, null, null, null, null, null, null, null, null, null, null,null];
+
   $scope.results      = [null, null, null, null, null, null, null, null, null, null, null,null];
 
   $scope.averages     = {};
@@ -287,13 +289,34 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
         // population density
         $scope.density[object.region].raw = object.populationDensity;
         totalPopulationDensity += object.populationDensity;
+
+        $scope.postcode[object.region] = object.postcode;
       });
 
 
       for (var r = 0; r < $scope.numberOfRegions; r++)
       {
-        $scope.age[r].score = ($scope.age[r].score / totalAge).toFixed(4);
-        $scope.density[r].score = ($scope.density[r].raw / totalPopulationDensity).toFixed(4);
+        if($scope.age[r] == null)
+        {
+          $scope.age[r] = {"raw":0, "score":0};
+        }
+        else
+        {
+          $scope.age[r].score = ($scope.age[r].score / totalAge).toFixed(4);
+        }
+        if($scope.density[r] == null)
+        {
+          $scope.density[r] = {"raw":0, "score":0};
+        }
+        else
+        {
+          $scope.density[r].score = ($scope.density[r].raw / totalPopulationDensity).toFixed(4);
+        }
+        if($scope.expenditure[r] == null)
+        {
+          $scope.expenditure[r] = {"raw":0, "score":0};
+        }
+
       }
     });
   };
@@ -341,6 +364,8 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
                                         +$scope.results[index].expenditureScore
                                         +$scope.results[index].ageScore
                                         +$scope.results[index].densityScore;
+
+      $scope.results[index].postcode = $scope.postcode[index];
     }
     // result 0 is the best region based on score!
     $scope.results = $filter('orderBy')($scope.results, '-totalScore');
@@ -391,11 +416,14 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
 
     }
 
-
+    // region head screen
+    $scope.resultHeader = $sce.trustAsHtml("<div class='header' id='header"+ $scope.results[0].regionIndex +"'><h3>"+ $scope.results[0].regionName +"</h3></div>");
 
     // ouput results!
     var regionMessage = "Donde calculates that the best area for you to live is in the " + $scope.results[0].regionName + " region.";
     $scope.result_region = $sce.trustAsHtml(regionMessage);
+
+    console.log($scope.results[0].postcode);
 
     // employment
     var wages0Percent = (($scope.results[0].wages0Value / $scope.averages.wages0)*100).toFixed(0)-100;
@@ -426,6 +454,15 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
     $scope.result_population = $sce.trustAsHtml(populationMessage);
   };
 
+
+  $scope.getJobsForRegion = function(limit, postcode, keywords){
+
+    var url = 'http://api.lmiforall.org.uk/api/v1/vacancies/search?limit='+limit+'10&postcode='+ postcode+'&keywords='+keywords;
+    
+    SOC.get(url).success(function(data){
+
+    });
+  };
   // TODO: Make sure we are using the regional indexes correct, LMI have conflicting values?! :(
   $scope.regionLetterToRegionIndex = function(letter) {
     var l = letter;

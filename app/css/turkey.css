@@ -282,3 +282,14 @@ h5
   -moz-animation: expand 1.6s linear 0.8s infinite both;
   animation: expand 1.6s linear 0.8s infinite both;
 }
+
+.header
+{
+  width: 100%;
+  height: 120px;
+}
+#header0
+{
+  background-image: url('london.jpg');
+  background-color: white;
+}
