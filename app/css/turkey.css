@@ -39,7 +39,7 @@ label{
 .scrollr{
   height: 100%;
   /*overflow: auto;*/
-  /*overflow: hidden;*/
+  overflow: hidden;
   }
   input{
     border: 2px solid #fff !important;
@@ -99,7 +99,7 @@ label{
     color: #333;
     }
     #tokens .btn{
-      /*background: #333;*/
+      background: #00679e;
     }
   .container#results{
     color: #fff;
@@ -142,7 +142,7 @@ label{
       #life .row strong{
         text-transform: uppercase;
       }
-      #life h2 span{
+      #life h3 span{
         float: right;
         color: rgba(0,0,0,0.3);
       }

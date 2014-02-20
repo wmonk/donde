@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 
-  <title>Project Turkey</title>
+  <title>Donde</title>
 
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/turkey.css" rel="stylesheet">
@@ -22,10 +22,6 @@
   <script src="js/ng-google-chart.js"></script>
   <script>
     $('document').ready(function(){
-        setTimeout(function(){
-    // Hide the address bar!
-    window.scrollTo(0, 1);
-  }, 0);
       $('.scrollr .container').each(function(){
         if($(this).height() < $(window).height()){
           $(this).css({minHeight: $(window).height()});
@@ -177,27 +173,16 @@
         <h1>Loading...</h1>
         <div class="loader"></div>
         <div ng-bind-html="mapImage"></div>
-        <a scroll-on-click class="btn btn-primary btn-lg btn-block" href="#life" ng-click="getLifePlan()">Show me!</a>
+        <a scroll-on-click class="btn btn-primary btn-lg btn-block" href="#life" ng-click="getLifePlan()">Change my life!</a>
       </div>
 
       <div class="container" id="life">
-        <!-- <div ng-bind-html="resultHeader"></div> -->
-        <!-- <h4>Region</h4>
-        <div ng-bind-html="result_region"></div>
-        <h4>Employment</h4>
-        <div ng-bind-html="result_employment"></div>
-        <h4>Costs</h4>
-        <div ng-bind-html="result_costs"></div>
-        <h4>Population</h4>
-        <div ng-bind-html="result_population"></div>
-        <br/>
-        <br/> -->
         <div id="regionGrid">
           <h1>You should move to {{results[0].regionName}}!</h1>
           <p><strong>Donde</strong> has calculated the optimal area for you live, based on your spent tokens. Below are the top 4 regions. Scroll to the bottom to view sample jobs!</p>
           <br>
           <div ng-repeat="region in results | limitTo:4" class="row {{ $index === 0 ? 'special' : '' }}">
-            <h2>{{region.regionName}} <span>{{$index + 1}}</span></h2>
+            <h3>{{region.regionName}} <span>{{$index + 1}}</span></h3>
             <div ng-if="$index === 0">
               <div ng-bind-html="result_employment"></div>
               <div ng-bind-html="result_costs"></div>
@@ -218,15 +203,21 @@
           <br>
           <h2>Jobs for {{ users[0].jobTitle }}</h2>
           <br>
-          <div ng-repeat="job in jobs[0] | limitTo:4" class="row">
+          <div ng-repeat="job in jobs[0] | limitTo:4" class="row" ng-if="jobs[0].length > 0">
             <strong>{{ job.title }}</strong> <br>
             {{ job.company }}
           </div>
+          <div class="row" ng-if="jobs[0].length <= 0">
+            <strong>There are currently no vacancies in this area.</strong>
+          </div>
 
           <h2>Jobs for {{ users[1].jobTitle }}</h2>
-          <div ng-repeat="job in jobs[1] | limitTo:4" class="row">
+          <div ng-repeat="job in jobs[1] | limitTo:4" class="row" ng-if="jobs[1].length > 0">
             <strong>{{ job.title }}</strong> <br>
             {{ job.company }}
+          </div>
+          <div class="row" ng-if="jobs[1].length <= 0">
+            <strong>There are currently no vacancies in this area.</strong>
           </div>
         </div>
       </div>

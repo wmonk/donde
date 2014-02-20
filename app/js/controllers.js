@@ -439,10 +439,10 @@ projectTurkey.controller('calculateDeets', ['$scope', '$filter', '$sce', 'SOC', 
     var prospects0Percent = (($scope.results[0].prospects0Value / $scope.averages.prospects0)*100).toFixed(0)-100;
     var prospects1Percent = (($scope.results[0].prospects1Value / $scope.averages.prospects1)*100).toFixed(0)-100;
 
-    var employmentOutput = "<strong class='specialTitle'>" + $scope.users[0].jobTitle +"</strong><p>You can earn on average <em>£" + $scope.results[r].wages0Value + " per week</em> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions.";
+    var employmentOutput = "<strong class='specialTitle'>" + $scope.users[0].jobTitle +" (&pound;" + $scope.results[0].wages0Value + ")</strong><p>You can earn on average <em>£" + $scope.results[r].wages0Value + " per week</em> in "+ $scope.results[0].regionName + ", this is " + wages0Percent + "&#37; better than other regions.";
     employmentOutput += "The prospects in this area is " + prospects0Percent + "&#37; better than other regions on average.</p>";
 
-    employmentOutput  += "<strong>" + $scope.users[1].jobTitle +"</strong><p>You can earn on average <em>£" + $scope.results[r].wages1Value + " per week</em> in "+ $scope.results[0].regionName + ", this is " + wages1Percent + "&#37; better than other regions.";
+    employmentOutput  += "<strong>" + $scope.users[1].jobTitle  +" (&pound;" + $scope.results[0].wages1Value + ")</strong><p>You can earn on average <em>£" + $scope.results[r].wages1Value + " per week</em> in "+ $scope.results[0].regionName + ", this is " + wages1Percent + "&#37; better than other regions.";
     employmentOutput += "The prospects in this area is " + prospects1Percent + "&#37; better than other regions.</p>";
     $scope.result_employment = $sce.trustAsHtml(employmentOutput);
 
@@ -648,7 +648,7 @@ projectTurkey.directive('scrollOnClick', function() {
           });
         }else if(i === 5){
           $("#welcome").animate({marginTop: (-$(window).height() * (i - 1)) - $('#tokens').outerHeight()}, "slow", function(){
-            $('.scrollr').css({height: $('#life').outerHeight()})
+            $('.scrollr').css({height: $('#life').outerHeight() + $('#jobs').outerHeight() + 100})
           });
         }else if(i === 3){
           $("#welcome").animate({marginTop: -$(window).height() * i}, "slow", function(){
